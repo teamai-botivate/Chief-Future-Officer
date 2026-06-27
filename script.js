@@ -793,42 +793,105 @@ document.addEventListener('click', e => {
 
 // ── Task Extraction ───────────────────────────────────────────────────────────
 
+// Strip markdown bold/italic/code from plain text
+function stripMd(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/`(.+?)`/g, '$1')
+    .replace(/^#+\s*/, '')
+    .trim();
+}
+
 function extractTasks(analysisText, source, sourceId) {
   if (!analysisText) return [];
-  const tasks = [];
-  const lines = analysisText.split('\n');
-  let inRoadmap = false;
-  let inNextSteps = false;
-  let in90Day = false;
 
-  for (const line of lines) {
-    const t = line.trim();
+  const lines = analysisText.split('\n');
+  const tasks = [];
+
+  // Track which section we're in for context
+  let currentSection = '';
+  const ACTION_SECTIONS = /90.DAY|ACTION PLAN|NEXT STEP|ROADMAP|IMMEDIATE|WEEK\s*1|WEEK\s*2|WEEK\s*3|MONTH\s*2|MONTH\s*3|HOW TO SOLVE|INVESTMENT PRIOR|GO.TO.MARKET|DEPARTMENT FOCUS|BUSINESS COACH/i;
+  const INFO_SECTIONS   = /EXECUTIVE SUMMARY|GAP ANALYSIS|FUTURE IMPACT|BOTIVATE KA FUTURE|COMPETITOR ANALYSIS|LOCATION INTEL|CLIENT INTEL|NETWORK|NETWORTH|FINANCIAL RECOMMENDATION|PRODUCT IMPROVEMENT|NEXT PRODUCTS/i;
+
+  // Map section name → category label for description
+  const sectionCategory = (s) => {
+    if (/90.DAY|ACTION PLAN|WEEK|MONTH/.test(s)) return '90-Day Plan';
+    if (/ROADMAP/.test(s)) return 'Roadmap';
+    if (/INVESTMENT/.test(s)) return 'Investment';
+    if (/GO.TO.MARKET|GTM/.test(s)) return 'Go-to-Market';
+    if (/BUSINESS COACH/.test(s)) return 'Business Coach';
+    if (/DEPARTMENT/.test(s)) return 'Team Focus';
+    if (/HOW TO SOLVE/.test(s)) return 'Gap Fix';
+    if (/NEXT STEP/.test(s)) return 'Next Steps';
+    return 'Strategy';
+  };
+
+  let inActionSection = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
     if (!t) continue;
 
-    // Detect action sections
-    const upper = t.toUpperCase();
-    if (/ROADMAP|NEXT STEP|ACTION PLAN|90.DAY|WEEK 1|WEEK 2|MONTH 2|MONTH 3|IMMEDIATE ACTION/.test(upper)) {
-      inRoadmap = true; inNextSteps = true; in90Day = true;
+    // Detect section headers
+    if (t.startsWith('##') || t.startsWith('###') || /^[A-Z][A-Z\s\/\-]{3,}:?$/.test(t)) {
+      const header = stripMd(t).toUpperCase();
+      currentSection = header;
+      inActionSection = ACTION_SECTIONS.test(header);
+      continue;
     }
 
-    // Collect numbered items and bullets as tasks
-    const isBullet = t.startsWith('- ') || t.startsWith('* ') || t.startsWith('• ');
-    const isNumbered = /^\d+[\.\)]\s/.test(t);
-    const isWeekMonth = /^(Week|Month|Day)\s/i.test(t);
+    // Only extract from action-oriented sections
+    if (!inActionSection) continue;
 
-    if (isBullet || isNumbered || isWeekMonth) {
-      let text = t.replace(/^[-*•]\s/, '').replace(/^\d+[\.\)]\s/, '').replace(/^(Week|Month|Day)\s[\d\-]+:\s*/i, '').trim();
-      // Only include lines that look like actions (contain a verb or instruction)
-      if (text.length > 15 && text.length < 300) {
-        tasks.push({ title: text, priority: inferPriority(text) });
+    const isBullet   = /^[-*•]\s/.test(t);
+    const isNumbered = /^\d+[\.\)]\s/.test(t);
+    const isWeekLine = /^(Week|Month)\s*[\d\-]+[:\-]/i.test(t);
+
+    if (!isBullet && !isNumbered && !isWeekLine) continue;
+
+    // Clean the raw text
+    let raw = t
+      .replace(/^[-*•]\s*/, '')
+      .replace(/^\d+[\.\)]\s*/, '')
+      .replace(/^(Week|Month)\s*[\d\-]+[:\-]\s*/i, '')
+      .trim();
+
+    raw = stripMd(raw);
+
+    // Skip if too short, too long, or just metadata
+    if (raw.length < 20 || raw.length > 250) continue;
+    if (/^\d+[\.,]/.test(raw)) continue; // skip pure numbers
+    if (/^(INR|₹|Amount|Expected|Timeline|Owner|Steps|Action|Result)/i.test(raw)) continue;
+
+    // Build clean title: first sentence / up to 80 chars
+    let title = raw.split(/[|—–]/)[0].trim(); // stop at pipe or dash separators
+    if (title.length > 80) title = title.slice(0, 77) + '…';
+
+    // Build description from remainder or next line context
+    let description = '';
+    const remainder = raw.slice(title.length).replace(/^[\s|—–]+/, '').trim();
+    if (remainder.length > 10) {
+      description = stripMd(remainder).slice(0, 120);
+    } else if (i + 1 < lines.length) {
+      const nextLine = stripMd(lines[i + 1].trim());
+      if (nextLine.length > 10 && nextLine.length < 150 && !nextLine.startsWith('#')) {
+        description = nextLine.slice(0, 120);
       }
     }
+
+    tasks.push({
+      title,
+      description,
+      priority: inferPriority(raw + ' ' + currentSection),
+      category: sectionCategory(currentSection),
+    });
   }
 
-  // Deduplicate and cap at 12
+  // Deduplicate by title prefix
   const seen = new Set();
   return tasks.filter(t => {
-    const key = t.title.slice(0, 60);
+    const key = t.title.slice(0, 50).toLowerCase();
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -837,34 +900,54 @@ function extractTasks(analysisText, source, sourceId) {
 
 function inferPriority(text) {
   const t = text.toLowerCase();
-  if (/immediate|urgent|now|this week|week 1|asap|critical/.test(t)) return 'high';
-  if (/month 3|long.term|eventually|consider|explore/.test(t)) return 'low';
+  if (/immediate|urgent|this week|week 1|week 2|asap|critical|day 1|now|must|first/.test(t)) return 'high';
+  if (/month 3|long.term|eventually|consider|explore|later|future/.test(t)) return 'low';
   return 'medium';
 }
 
 function renderTaskExtract(tasks, source, sourceId) {
   if (!tasks || tasks.length === 0) return '';
-  const items = tasks.map((task, i) => `
-    <div class="task-extract-item" id="tex-${source}-${sourceId}-${i}">
+
+  const priorityColor = { high: 'var(--red)', medium: 'var(--amber)', low: 'var(--blue)' };
+  const priorityBg    = { high: 'rgba(255,77,106,0.12)', medium: 'rgba(245,158,11,0.12)', low: 'rgba(59,158,255,0.10)' };
+
+  const items = tasks.map((task, i) => {
+    const pc = priorityColor[task.priority] || 'var(--blue)';
+    const pb = priorityBg[task.priority]    || 'rgba(59,158,255,0.10)';
+    const desc = task.description ? `<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;line-height:1.5;">${escHtml(task.description)}</div>` : '';
+    const cat  = task.category    ? `<span style="font-size:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--text-muted);">${escHtml(task.category)}</span>` : '';
+
+    return `<div class="task-extract-item" id="tex-${source}-${sourceId}-${i}">
+      <div style="flex-shrink:0;width:6px;height:6px;border-radius:50%;background:${pc};margin-top:6px;"></div>
       <div style="flex:1;min-width:0;">
-        <div style="font-size:13px;color:var(--text-primary);line-height:1.5;">${escHtml(task.title)}</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Priority: <span class="priority-dot priority-${task.priority}">${task.priority}</span></div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.5;">${escHtml(task.title)}</div>
+        ${desc}
+        <div style="display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap;">
+          ${cat}
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
+            padding:1px 7px;border-radius:10px;background:${pb};color:${pc};">${task.priority}</span>
+        </div>
       </div>
       <button class="btn-add-task" onclick="addTaskFromExtract(${i}, '${source}', ${sourceId || 'null'}, this)"
         title="Add to Tasks">+ Add</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+
+  const tasksJson = JSON.stringify(tasks).replace(/"/g, '&quot;');
 
   return `
-    <div class="task-extract-box" style="margin-top:20px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-        <span style="font-size:14px;font-weight:700;color:var(--white-full);">✅ Suggested Tasks</span>
-        <span style="font-size:11px;color:var(--text-muted);">— extracted from this analysis</span>
-        <button class="btn btn-primary" style="margin-left:auto;font-size:11px;padding:5px 12px;"
-          onclick="addAllTasks('${source}', ${sourceId || 'null'}, ${JSON.stringify(tasks).replace(/"/g,'&quot;')})">
-          + Add All
+    <div class="task-extract-box" style="margin-top:24px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--white-full);">✅ Suggested Action Tasks</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${tasks.length} tasks extracted from this analysis — add individually or all at once</div>
+        </div>
+        <button class="btn btn-primary" style="margin-left:auto;font-size:11px;padding:6px 14px;"
+          onclick="addAllTasks('${source}', ${sourceId || 'null'}, ${tasksJson})">
+          + Add All (${tasks.length})
         </button>
       </div>
-      <div style="display:flex;flex-direction:column;gap:6px;">${items}</div>
+      <div style="display:flex;flex-direction:column;gap:2px;">${items}</div>
     </div>`;
 }
 

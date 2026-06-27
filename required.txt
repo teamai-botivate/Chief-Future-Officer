@@ -1,0 +1,108 @@
+## BOTIVATE — ADDITIONAL DETAILS FOR AI CFO
+
+### 1. CLIENT CASE STUDIES (repeat for each)
+Client industry:
+Problem they had:
+What Botivate automated:
+Result / outcome: (time saved, errors reduced, revenue impact, etc.)
+
+Client industry:
+Problem they had:
+What Botivate automated:
+Result / outcome:
+
+Client industry:
+Problem they had:
+What Botivate automated:
+Result / outcome:
+
+---
+
+### 3. SALES & PIPELINE
+Typical deal size: (monthly / annual contract value)
+Average sales cycle: (how many days/weeks to close)
+Top 3 objections prospects raise:
+Why deals stall or are lost:
+Best performing lead source: (referral / LinkedIn / cold outreach / events / other)
+Current number of active prospects in pipeline:
+
+---
+
+### 4. TEAM STRUCTURE
+Total team size:
+Founders: (how many, roles)
+Sales team: (how many people)
+Delivery / implementation team: (how many)
+Developers / engineers: (how many)
+Customer success: (how many)
+Any key hires planned:
+
+---
+
+### 5. REVENUE MODEL
+Primary revenue type: (recurring SaaS / implementation + AMC / project-based / hybrid)
+Current monthly recurring revenue (MRR): (range is fine, e.g. "5-10L")
+Revenue growth: (approximate YoY or MoM)
+Number of active paying clients:
+Average revenue per client per year:
+
+---
+
+### 6. COMPETITORS
+Who do clients compare you with most:
+Who do you most often lose deals to:
+Your biggest differentiator vs each:
+  vs Zoho:
+  vs Tally:
+  vs SAP Business One:
+  vs custom development:
+  vs others:
+
+---
+
+### 7. AUTOROCKET PRODUCT ROADMAP
+Features already in progress (next 3 months):
+Features planned (3-6 months):
+Features planned (6-12 months):
+Biggest technical challenge right now:
+
+---
+
+### 8. CURRENT BOTTLENECK
+What is the single biggest thing holding growth back right now:
+  (sales / delivery capacity / product gaps / funding / team / market awareness / other)
+Details:
+
+---
+
+### 9. GEOGRAPHY & LANGUAGE
+Cities / states currently active:
+Languages supported in product today:
+Next geography target:
+Any international plans: (UAE / Singapore / other)
+
+---
+
+### 10. FUNDING
+Current status: (bootstrapped / angel funded / seed / series A / other)
+Amount raised so far: (optional)
+Current runway: (months)
+Fundraising plans: (not planning / actively raising / closing round)
+Target raise amount:
+What the funds will be used for:
+
+---
+
+### 11. PARTNERSHIPS
+Existing tech integrations: (Tally / WhatsApp / GST portals / payment gateways / other)
+Channel partners or resellers: (yes/no, how many)
+System integrator partnerships:
+Any government or enterprise tie-ups:
+
+---
+
+### 12. STRATEGIC PRIORITIES RIGHT NOW
+Top 3 things you want the AI CFO to help you think about most:
+1.
+2.
+3.

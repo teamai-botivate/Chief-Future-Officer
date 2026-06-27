@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chief Future Officer — Botivate AI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <div class="logo-icon">◈</div>
+        <div class="logo-text">
+          <div class="logo-title">Chief Future Officer</div>
+          <div class="logo-subtitle">AI Strategic Intelligence</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+
+      <button class="nav-item" id="nav-dashboard" onclick="showScreen('dashboard')">
+        <span class="nav-icon">⬡</span> Dashboard
+      </button>
+      <button class="nav-item" id="nav-history" onclick="showScreen('history')">
+        <span class="nav-icon">🏢</span> Company History
+      </button>
+      <button class="nav-item" id="nav-research" onclick="showScreen('research')">
+        <span class="nav-icon">🔬</span> AI Research
+      </button>
+      <button class="nav-item" id="nav-recommend" onclick="showScreen('recommend')">
+        <span class="nav-icon">🧭</span> Recommendations
+      </button>
+      <button class="nav-item" id="nav-logs" onclick="showScreen('logs')">
+        <span class="nav-icon">📋</span> Logs
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="company-badge">
+        <div class="company-avatar">B</div>
+        <div>
+          <div class="company-name">Botivate</div>
+          <div class="company-role">AI Strategic System</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ─────────────────────────────────────────────────────────────── -->
+  <div class="main">
+    <div class="topbar">
+      <button class="topbar-menu-btn" onclick="openSidebar()">☰</button>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-badge">◈ CFO Live</div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── DASHBOARD ──────────────────────────────────────────────────── -->
+      <div class="screen" id="screen-dashboard">
+
+        <div class="hero-banner">
+          <div class="hero-title gradient-text">Chief Future Officer</div>
+          <div class="hero-title" style="font-size:16px;font-weight:500;color:var(--text-secondary);margin-top:4px;">Botivate's AI Strategic Intelligence System</div>
+          <p class="hero-desc" style="margin-top:10px;">
+            Ask the AI CFO anything about your business strategy. It researches the web,
+            combines your company's history and vision, and delivers sharp strategic intelligence.
+          </p>
+          <div class="hero-cta">
+            <button class="btn btn-primary" onclick="showScreen('research')">🔬 Start Research</button>
+            <button class="btn btn-ghost" onclick="showScreen('recommend')">🧭 Get Recommendation</button>
+          </div>
+        </div>
+
+        <!-- Stats row -->
+        <div class="dash-grid">
+          <div class="stat-card">
+            <div class="stat-label">Team Size</div>
+            <div class="stat-value" id="dash-customers">—</div>
+            <div class="stat-trend up">↑ Growing</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Automation Modules</div>
+            <div class="stat-value" id="dash-growth">—</div>
+            <div class="stat-trend up">↑ Reusable</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Industries Served</div>
+            <div class="stat-value" id="dash-nps">—</div>
+            <div class="stat-trend up">↑ Expanding</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Current Market Focus</div>
+            <div class="stat-value" id="dash-retention" style="font-size:18px;margin-top:6px;">—</div>
+            <div class="stat-trend up">↑ Scaling</div>
+          </div>
+        </div>
+
+        <!-- Daily Brief -->
+        <div class="card" id="daily-brief-card" style="margin-bottom:24px;">
+          <div class="card-header" style="justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="card-icon yellow">☀️</div>
+              <div>
+                <div class="card-title">Daily Strategic Brief</div>
+                <div class="card-subtitle" id="brief-date">Loading…</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;" onclick="openScheduleModal()">⏰ Schedule</button>
+              <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;" onclick="regenerateBrief()">↺ Regenerate</button>
+            </div>
+          </div>
+          <div id="daily-brief-body">
+            <div class="loader visible"><div class="spinner"></div><span>Generating today's brief…</span></div>
+          </div>
+        </div>
+
+        <!-- Quick action cards -->
+        <div class="two-col">
+          <div class="card" style="cursor:pointer" onclick="showScreen('research')">
+            <div class="card-header">
+              <div class="card-icon purple">🔬</div>
+              <div>
+                <div class="card-title">AI Research</div>
+                <div class="card-subtitle">Web research + LLM analysis</div>
+              </div>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">
+              Ask any market or strategic question. The CFO searches the web and synthesises findings
+              against Botivate's context.
+            </p>
+            <div class="mt-16">
+              <span class="chip" style="cursor:default">How is AI changing ERP?</span>
+              <span class="chip" style="cursor:default">Jewellery market trends</span>
+            </div>
+          </div>
+
+          <div class="card" style="cursor:pointer" onclick="showScreen('recommend')">
+            <div class="card-header">
+              <div class="card-icon green">🧭</div>
+              <div>
+                <div class="card-title">Strategic Recommendations</div>
+                <div class="card-subtitle">Goal → Roadmap + priorities</div>
+              </div>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">
+              Enter a business goal. The CFO generates opportunities, threats, competitors,
+              tech trends, and a recommended roadmap.
+            </p>
+            <div class="mt-16">
+              <span class="chip" style="cursor:default">Enter Healthcare</span>
+              <span class="chip" style="cursor:default">Expand to UAE</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col mt-16">
+          <div class="card" style="cursor:pointer" onclick="showScreen('history')">
+            <div class="card-header">
+              <div class="card-icon yellow">🏢</div>
+              <div>
+                <div class="card-title">Company Overview</div>
+                <div class="card-subtitle">Botivate history & vision</div>
+              </div>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">
+              Review Botivate's founding story, product portfolio, strategic goals, and competitive advantages.
+            </p>
+          </div>
+
+          <div class="card" style="cursor:pointer" onclick="showScreen('logs')">
+            <div class="card-header">
+              <div class="card-icon red">📋</div>
+              <div>
+                <div class="card-title">Execution Logs</div>
+                <div class="card-subtitle">All AI queries and outputs</div>
+              </div>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">
+              View history of all research queries and strategic recommendations generated this session.
+            </p>
+          </div>
+        </div>
+
+        <!-- LangGraph workflow visual -->
+        <div class="card mt-16">
+          <div class="card-header">
+            <div class="card-icon blue">⚙️</div>
+            <div class="card-title">How the AI CFO Works</div>
+          </div>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:8px;">
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--text-secondary);text-align:center;">
+              <div style="font-size:18px;margin-bottom:4px;">💬</div>User Query
+            </div>
+            <div style="color:var(--accent);font-size:18px;">→</div>
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--text-secondary);text-align:center;">
+              <div style="font-size:18px;margin-bottom:4px;">🏢</div>Company Knowledge
+            </div>
+            <div style="color:var(--accent);font-size:18px;">→</div>
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--text-secondary);text-align:center;">
+              <div style="font-size:18px;margin-bottom:4px;">🌐</div>Web Research
+            </div>
+            <div style="color:var(--accent);font-size:18px;">→</div>
+            <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--text-secondary);text-align:center;">
+              <div style="font-size:18px;margin-bottom:4px;">🧠</div>Strategic Analysis
+            </div>
+            <div style="color:var(--accent);font-size:18px;">→</div>
+            <div style="background:var(--accent-glow);border:1px solid rgba(108,99,255,0.3);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--accent);text-align:center;">
+              <div style="font-size:18px;margin-bottom:4px;">✨</div>Recommendation
+            </div>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:12px;">
+            Powered by LangGraph + GPT-4.1 + Tavily Search &bull; SQLite for persistence
+          </p>
+        </div>
+
+      </div><!-- /dashboard -->
+
+      <!-- ── COMPANY HISTORY ────────────────────────────────────────────── -->
+      <div class="screen" id="screen-history">
+        <div class="section-heading">Company History</div>
+        <p class="section-sub">Botivate's founding story, products, and strategic direction.</p>
+        <div id="history-content">
+          <div class="loader visible"><div class="spinner"></div><span>Loading…</span></div>
+        </div>
+      </div>
+
+      <!-- ── RESEARCH ───────────────────────────────────────────────────── -->
+      <div class="screen" id="screen-research">
+        <div class="section-heading">AI Research</div>
+        <p class="section-sub">Ask any strategic or market question. The AI CFO researches the web and synthesises findings against Botivate's context.</p>
+
+        <div class="card">
+          <div class="input-group">
+            <label class="input-label" for="research-input">Research Question</label>
+            <textarea id="research-input" rows="3"
+              placeholder="e.g. How is AI changing ERP for SMEs? What opportunities exist in Jewellery manufacturing?"></textarea>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <div class="input-label" style="margin-bottom:8px;">Example Questions</div>
+            <div class="chips">
+              <div class="chip" onclick="fillResearch('How is AI changing ERP for SMEs?')">How is AI changing ERP?</div>
+              <div class="chip" onclick="fillResearch('What are the biggest trends in jewellery retail technology?')">Jewellery tech trends</div>
+              <div class="chip" onclick="fillResearch('What should a B2B SaaS startup focus on in 2025?')">B2B SaaS focus 2025</div>
+              <div class="chip" onclick="fillResearch('How are Indian SMEs adopting automation and AI?')">Indian SME automation</div>
+              <div class="chip" onclick="fillResearch('What is the market opportunity in healthcare ERP in India?')">Healthcare ERP India</div>
+              <div class="chip" onclick="fillResearch('What are the top competitors to Zoho and Tally in India?')">ERP competitors India</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="research-btn" onclick="runResearch()">
+            🔬 Run Research
+          </button>
+        </div>
+
+        <div class="loader" id="research-loader" style="padding:24px 0;">
+          <div class="spinner"></div>
+          <div class="loader-steps">
+            <div class="loader-step">Loading company knowledge…</div>
+            <div class="loader-step">Searching the web…</div>
+            <div class="loader-step">Running strategic analysis…</div>
+            <div class="loader-step">Generating findings…</div>
+          </div>
+        </div>
+
+        <div id="research-result" style="display:none;"></div>
+      </div>
+
+      <!-- ── RECOMMENDATIONS ────────────────────────────────────────────── -->
+      <div class="screen" id="screen-recommend">
+        <div class="section-heading">Strategic Recommendations</div>
+        <p class="section-sub">Enter a business goal and the AI CFO will generate a full strategic brief — opportunities, threats, competitors, tech trends, and a recommended roadmap.</p>
+
+        <div class="card">
+          <div class="input-group">
+            <label class="input-label" for="recommend-input">Business Goal</label>
+            <textarea id="recommend-input" rows="3"
+              placeholder="e.g. We want to enter the Healthcare vertical with a specialised ERP module."></textarea>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <div class="input-label" style="margin-bottom:8px;">Example Goals</div>
+            <div class="chips">
+              <div class="chip" onclick="fillRecommend('We want to enter the Healthcare vertical with a specialised ERP module.')">Enter Healthcare</div>
+              <div class="chip" onclick="fillRecommend('We want to expand Botivate to the UAE market.')">Expand to UAE</div>
+              <div class="chip" onclick="fillRecommend('We want to build an AI agent marketplace for business automation.')">AI Agent Marketplace</div>
+              <div class="chip" onclick="fillRecommend('We want to add embedded finance and working capital loans to BotiERP.')">Embedded Finance</div>
+              <div class="chip" onclick="fillRecommend('What products should Botivate launch next to grow revenue?')">New Product Strategy</div>
+              <div class="chip" onclick="fillRecommend('We want to compete with Zoho and Tally in the Indian SME market.')">Compete with Zoho</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="recommend-btn" onclick="runRecommend()">
+            🧭 Generate Recommendation
+          </button>
+        </div>
+
+        <div class="loader" id="recommend-loader" style="padding:24px 0;">
+          <div class="spinner"></div>
+          <div class="loader-steps">
+            <div class="loader-step">Loading company knowledge…</div>
+            <div class="loader-step">Researching market and competitors…</div>
+            <div class="loader-step">Analysing opportunities and threats…</div>
+            <div class="loader-step">Building strategic roadmap…</div>
+          </div>
+        </div>
+
+        <div id="recommend-result" style="display:none;"></div>
+      </div>
+
+      <!-- ── LOGS ───────────────────────────────────────────────────────── -->
+      <div class="screen" id="screen-logs">
+        <div class="section-heading">Execution Logs</div>
+        <p class="section-sub">All research queries and strategic recommendations generated in this session.</p>
+
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+          <button class="btn btn-ghost" onclick="loadLogs()">↺ Refresh</button>
+        </div>
+
+        <div id="logs-content">
+          <div class="loader visible"><div class="spinner"></div><span>Loading logs…</span></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+</div><!-- /app -->
+
+<!-- ── Schedule Modal ─────────────────────────────────────────────────────── -->
+<div id="schedule-modal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">⏰ Daily Brief Schedule</div>
+      <button class="modal-close" onclick="closeScheduleModal()">✕</button>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Run Time (24-hour format)</label>
+      <input type="time" id="sched-time" />
+      <div style="font-size:11px;color:var(--text-muted);">Brief regenerates once per day when you open the dashboard after this time.</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="input-group" style="margin-bottom:20px;">
+      <label class="input-label">Research Questions (max 5)</label>
+      <div id="sched-questions" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:7px 14px;width:fit-content;" onclick="addSchedQuestion()">+ Add Question</button>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+      <button class="btn btn-ghost" onclick="closeScheduleModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSchedule()">💾 Save Schedule</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

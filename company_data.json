@@ -1,0 +1,272 @@
+{
+  "company": {
+    "name": "Botivate",
+    "tagline": "Every business should run itself.",
+    "founded": "Early stage — started with 2 members",
+    "headquarters": "India",
+    "website": "https://botivate.in",
+    "industry": "Business Automation & AI",
+    "stage": "Growth Stage — 40+ team, scaling to enterprise",
+    "email": "team.ai@botivate.in",
+    "flagship_product": "AutoRocket — AI Business Operating System"
+  },
+
+  "description": "Botivate is a Business Automation and AI company. We don't sell ERP software. We help businesses run on autopilot — by understanding their processes deeply, standardizing workflows, automating operations, and layering AI on top. Our flagship product AutoRocket is an AI-first business operating system built from 70+ reusable automation modules developed from real client implementations across manufacturing, trading, hospitals, jewellery, real estate, steel, coal trading, solar, and service companies.",
+
+  "mission": "Make every business run itself. Automate the business, not just the software.",
+
+  "vision": "Become the world's leading Business Automation and AI Company. Every business decision backed by AI. AI Managers, AI Sales Teams, AI Operations, AI Finance, AI HR — a complete AI operating system where the business runs itself.",
+
+  "founding_story": "Botivate started with just 2 people and a vision to solve real business problems. Instead of building software from an office, the founders worked directly at client locations — sitting with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch teams, and operators to understand root problems from the ground up. Every solved client problem was converted into a reusable automation module. This is how the company grew from 2 to 40+ professionals and 70+ modules.",
+
+  "core_product": {
+    "name": "AutoRocket",
+    "description": "AutoRocket is an AI-first Business Operating System — positioned above traditional ERPs as the AI automation layer. It is not just ERP, not just CRM, not just AI — it is an operating system where AI manages the business. Built from 70+ proven automation modules.",
+    "positioning": "Above ERPs. The AI automation layer for the entire business.",
+    "key_capabilities": [
+      "AI Agents that manage business workflows autonomously",
+      "WhatsApp Automation for approvals, alerts and business communication",
+      "Director Dashboard with real-time business intelligence",
+      "70+ reusable automation modules across all business functions",
+      "AI Sales Agent for automated lead handling and follow-ups",
+      "Business Analytics and reporting",
+      "Role-based permissions and approval workflows",
+      "Cloud-native, mobile-accessible platform"
+    ]
+  },
+
+  "modules_built": [
+    "CRM",
+    "Sales",
+    "Purchase",
+    "Inventory",
+    "Production",
+    "HR",
+    "Attendance",
+    "Payroll",
+    "Project Management",
+    "Task Delegation",
+    "Vendor Management",
+    "WhatsApp Automation",
+    "AI Chatbots",
+    "AI Sales Agent",
+    "Director Dashboard",
+    "Business Reporting",
+    "MIS Dashboards",
+    "Google Sheets Automation",
+    "Approval Workflows",
+    "AI Business Intelligence"
+  ],
+
+  "evolution_phases": [
+    {
+      "phase": "Starting Phase",
+      "description": "Company started with just 2 members and a vision to solve real business problems."
+    },
+    {
+      "phase": "Initial Journey",
+      "description": "Worked directly at client locations instead of building software from an office."
+    },
+    {
+      "phase": "Learning Phase",
+      "description": "Sat with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch and operators to understand root problems firsthand."
+    },
+    {
+      "phase": "Product Phase",
+      "description": "Started converting every solved client problem into reusable automation modules."
+    },
+    {
+      "phase": "Growth Phase",
+      "description": "Expanded team from 2 people to 40+ professionals."
+    },
+    {
+      "phase": "System Phase",
+      "description": "Built 70+ automation modules covering manufacturing, trading, HR, finance, CRM, production, purchase, inventory and AI."
+    },
+    {
+      "phase": "AI Phase",
+      "description": "Started integrating AI Agents, WhatsApp Automation and Business Intelligence into all products."
+    },
+    {
+      "phase": "AutoRocket Phase",
+      "description": "Began building AutoRocket as an AI-first business operating system — not an ERP replacement, but an AI automation layer above ERPs."
+    },
+    {
+      "phase": "Current",
+      "description": "Positioning Botivate as a company that helps businesses run on autopilot. Focused on medium and large enterprises. Building toward every business running itself through AI."
+    }
+  ],
+
+  "vision_evolution": [
+    "Phase 1: Build software for businesses.",
+    "Phase 2: Automate business processes.",
+    "Phase 3: Become India's leading Business Automation Company.",
+    "Phase 4: Build AI that works for businesses.",
+    "Current Vision: Every business should run itself."
+  ],
+
+  "technology_evolution": [
+    "Google Workspace & Google Apps Script",
+    "Google Sites & Looker Studio",
+    "WhatsApp Business API",
+    "Cloud Infrastructure (AWS)",
+    "AI Models & API Integrations",
+    "Custom Automation Workflows",
+    "Current: AI Agents, Workflow Automation, Cloud-native Platform, AutoRocket"
+  ],
+
+  "industries_served": [
+    "Manufacturing",
+    "Trading",
+    "Hospitals & Healthcare",
+    "Jewellery",
+    "Real Estate",
+    "Steel",
+    "Coal Trading",
+    "Solar Energy",
+    "Service Companies",
+    "Large Industrial Groups"
+  ],
+
+  "customer_journey": [
+    "Started with small businesses",
+    "Moved to manufacturing",
+    "Expanded to trading",
+    "Entered hospitals",
+    "Entered jewellery",
+    "Added real estate",
+    "Added steel and coal trading",
+    "Added solar and service companies",
+    "Currently focused on medium and large enterprises"
+  ],
+
+  "business_strategy": [
+    "Understand the business first",
+    "Identify root problems",
+    "Standardize the process",
+    "Automate the workflow",
+    "Integrate AI",
+    "Implement with the team",
+    "Train users (consulting, not just software delivery)",
+    "Continuously improve",
+    "Convert every learning into a reusable product module",
+    "Repeat across industries"
+  ],
+
+  "key_decisions": [
+    "Instead of copying ERPs: Build from real business experience",
+    "Instead of selling software: Sell complete business automation",
+    "Instead of one industry: Serve every business vertical",
+    "Instead of one product: Build reusable modules",
+    "Instead of outsourcing understanding: Visit client sites personally",
+    "Instead of stopping after delivery: Provide continuous improvement",
+    "Instead of replacing employees: Make employees more productive with AI",
+    "Current major decision: Position AutoRocket above ERPs as the AI automation layer"
+  ],
+
+  "lessons_learned": [
+    "Software doesn't solve problems. Process does.",
+    "Every business is different.",
+    "Implementation is harder than development.",
+    "Users need consulting, not just software.",
+    "Automation should save time, not add work.",
+    "Every complaint is an opportunity to improve the product.",
+    "Build reusable solutions.",
+    "Think in systems.",
+    "AI should assist people, not replace them.",
+    "Long-term trust matters more than short-term revenue."
+  ],
+
+  "failures_and_solutions": [
+    {
+      "failure": "Built features before fully understanding user workflows.",
+      "solution": "Now always understand the business and map workflows before building."
+    },
+    {
+      "failure": "Users resisted implementation.",
+      "solution": "Started consulting and training users as part of every implementation."
+    },
+    {
+      "failure": "Different clients wanted different systems.",
+      "solution": "Developed modular architecture — 70+ reusable modules."
+    },
+    {
+      "failure": "Manual follow-ups caused delays.",
+      "solution": "Built workflow automation and WhatsApp alerts."
+    },
+    {
+      "failure": "Processes kept changing after delivery.",
+      "solution": "Adopted continuous product updates and change request process."
+    },
+    {
+      "failure": "Scaling custom work was difficult.",
+      "solution": "Convert every custom feature into a reusable module."
+    }
+  ],
+
+  "future_vision": {
+    "roadmap": [
+      "Botivate → AutoRocket → AI Operating System → Business runs itself",
+      "AI Managers",
+      "AI Sales Team",
+      "AI Operations",
+      "AI Finance",
+      "AI HR",
+      "AI Directors",
+      "Every business decision backed by AI"
+    ],
+    "ultimate_goal": "Become the world's leading Business Automation and AI Company."
+  },
+
+  "competitive_advantages": [
+    "Built from real client site experience — not from copying competitors",
+    "70+ reusable modules developed from actual implementations",
+    "Deep domain expertise across manufacturing, trading, healthcare, jewellery and more",
+    "AI-first architecture with WhatsApp-native experience",
+    "Consulting + software + training — full business transformation, not just software delivery",
+    "Implementation in days, not months",
+    "Continuous improvement model — every client feedback becomes a product improvement",
+    "AutoRocket positioned above ERPs as AI automation layer — unique positioning in market",
+    "40+ person team with real business domain expertise",
+    "Long-term trust relationships with enterprise clients"
+  ],
+
+  "team": {
+    "size": "40+",
+    "started_with": 2,
+    "approach": "Domain experts who understand businesses, not just developers"
+  },
+
+  "key_metrics": {
+    "team_size": "40+",
+    "modules_built": "70+",
+    "industries_served": "10+",
+    "implementation_approach": "Consulting + Software + Training",
+    "customer_focus": "Medium and Large Enterprises"
+  },
+
+  "documents_available": [
+    "Company Profile",
+    "Sales Deck",
+    "Master Service Agreement (MSA)",
+    "Non-Disclosure Agreement (NDA)",
+    "Statement of Work (SOW)",
+    "Business Requirement Document (BRD)",
+    "Functional Requirement Document (FRD)",
+    "Technical Design Document (TDD)",
+    "Standard Operating Procedures (SOPs)",
+    "User Manual",
+    "Training Material",
+    "Test Cases & QA Checklist",
+    "Deployment Checklist",
+    "Project Handover Document",
+    "Change Request (CR) Log",
+    "Product Roadmap",
+    "Product Backlog",
+    "Customer Feedback Log",
+    "Decision Log",
+    "Incident & Root Cause Report",
+    "Security & Access Policy",
+    "AI Agent Knowledge Base"
+  ]
+}

@@ -382,11 +382,27 @@ function renderRecommendResult(data, container) {
 function renderAnalysis(text) {
   if (!text) return '<em style="color:var(--text-muted)">No analysis available.</em>';
 
+  // Pre-process: collect table blocks first, render line-by-line for the rest
   const lines = text.split('\n');
   let html = '';
+  let i = 0;
 
-  for (let line of lines) {
-    const t = line.trim();
+  while (i < lines.length) {
+    const t = lines[i].trim();
+
+    // ── Table detection: line starts and ends with | ──────────────────────────
+    if (t.startsWith('|') && t.endsWith('|')) {
+      // Collect all consecutive table lines
+      const tableLines = [];
+      while (i < lines.length && lines[i].trim().startsWith('|') && lines[i].trim().endsWith('|')) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      html += renderTable(tableLines);
+      continue;
+    }
+
+    i++;
     if (!t) { html += '<div style="height:8px;"></div>'; continue; }
 
     // ### Heading 3 — color-coded by keyword
@@ -455,6 +471,45 @@ function renderAnalysis(text) {
   }
 
   return html;
+}
+
+function renderTable(tableLines) {
+  if (tableLines.length < 2) return '';
+
+  // Parse cells from a pipe-delimited row
+  const parseCells = row => row.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+
+  const headerCells = parseCells(tableLines[0]);
+  // Second row is separator (---, :---:, etc.) — skip it
+  const dataStart = tableLines.length > 1 && /^\|[\s\-\|:]+\|$/.test(tableLines[1]) ? 2 : 1;
+  const dataRows = tableLines.slice(dataStart).map(parseCells);
+
+  const thHtml = headerCells.map(h =>
+    `<th style="padding:9px 14px;text-align:left;font-size:11px;font-weight:700;
+      color:var(--blue);text-transform:uppercase;letter-spacing:0.8px;
+      border-bottom:1px solid var(--border);white-space:nowrap;">${mdInline(h)}</th>`
+  ).join('');
+
+  const tbodyHtml = dataRows.map((cells, ri) => {
+    const bg = ri % 2 === 0 ? 'var(--bg-card)' : 'var(--bg-elevated)';
+    const tdHtml = cells.map((c, ci) => {
+      const isFirst = ci === 0;
+      const style = isFirst
+        ? 'padding:9px 14px;font-size:12.5px;font-weight:600;color:var(--white-full);border-bottom:1px solid var(--border);'
+        : 'padding:9px 14px;font-size:12px;color:var(--text-secondary);border-bottom:1px solid var(--border);line-height:1.5;';
+      return `<td style="${style}">${mdInline(c)}</td>`;
+    }).join('');
+    return `<tr style="background:${bg};">${tdHtml}</tr>`;
+  }).join('');
+
+  return `<div style="overflow-x:auto;margin:12px 0 16px;border-radius:10px;border:1px solid var(--border);">
+    <table style="width:100%;border-collapse:collapse;font-family:inherit;">
+      <thead style="background:var(--bg-elevated);">
+        <tr>${thHtml}</tr>
+      </thead>
+      <tbody>${tbodyHtml}</tbody>
+    </table>
+  </div>`;
 }
 
 /* Map section keyword → color variable string */

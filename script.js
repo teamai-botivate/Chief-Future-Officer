@@ -783,12 +783,11 @@ async function saveSchedule() {
   }
 }
 
-// Close modal on backdrop click
+// Close modals on backdrop click
 document.addEventListener('click', e => {
-  const modal = document.getElementById('schedule-modal');
-  if (e.target === modal) closeScheduleModal();
-  const cm = document.getElementById('complete-modal');
-  if (e.target === cm) closeCompleteModal();
+  if (e.target === document.getElementById('schedule-modal'))     closeScheduleModal();
+  if (e.target === document.getElementById('complete-modal'))     closeCompleteModal();
+  if (e.target === document.getElementById('task-detail-modal'))  closeTaskDetailModal();
 });
 
 // ── Task Extraction ───────────────────────────────────────────────────────────
@@ -905,8 +904,14 @@ function inferPriority(text) {
   return 'medium';
 }
 
+// Global store for task detail modal
+let _taskDetailList = [];
+
 function renderTaskExtract(tasks, source, sourceId) {
   if (!tasks || tasks.length === 0) return '';
+
+  // Store globally so modal can access full data
+  _taskDetailList = tasks;
 
   const priorityColor = { high: 'var(--red)', medium: 'var(--amber)', low: 'var(--blue)' };
   const priorityBg    = { high: 'rgba(255,77,106,0.12)', medium: 'rgba(245,158,11,0.12)', low: 'rgba(59,158,255,0.10)' };
@@ -914,21 +919,26 @@ function renderTaskExtract(tasks, source, sourceId) {
   const items = tasks.map((task, i) => {
     const pc = priorityColor[task.priority] || 'var(--blue)';
     const pb = priorityBg[task.priority]    || 'rgba(59,158,255,0.10)';
-    const desc = task.description ? `<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;line-height:1.5;">${escHtml(task.description)}</div>` : '';
-    const cat  = task.category    ? `<span style="font-size:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--text-muted);">${escHtml(task.category)}</span>` : '';
+    const cat = task.category
+      ? `<span style="font-size:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--text-muted);">${escHtml(task.category)}</span>`
+      : '';
 
     return `<div class="task-extract-item" id="tex-${source}-${sourceId}-${i}">
-      <div style="flex-shrink:0;width:6px;height:6px;border-radius:50%;background:${pc};margin-top:6px;"></div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.5;">${escHtml(task.title)}</div>
-        ${desc}
+      <div style="flex-shrink:0;width:6px;height:6px;border-radius:50%;background:${pc};margin-top:7px;"></div>
+      <div style="flex:1;min-width:0;cursor:pointer;" onclick="openTaskDetail(${i}, '${source}', ${sourceId || 'null'})">
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.5;
+          text-decoration:underline;text-decoration-color:var(--border-light);text-underline-offset:3px;">
+          ${escHtml(task.title)}
+        </div>
         <div style="display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap;">
           ${cat}
           <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
             padding:1px 7px;border-radius:10px;background:${pb};color:${pc};">${task.priority}</span>
+          <span style="font-size:10px;color:var(--text-muted);">↗ tap for details</span>
         </div>
       </div>
-      <button class="btn-add-task" onclick="addTaskFromExtract(${i}, '${source}', ${sourceId || 'null'}, this)"
+      <button class="btn-add-task" id="btn-tex-${source}-${i}"
+        onclick="addTaskFromExtract(${i}, '${source}', ${sourceId || 'null'}, this)"
         title="Add to Tasks">+ Add</button>
     </div>`;
   }).join('');
@@ -940,7 +950,9 @@ function renderTaskExtract(tasks, source, sourceId) {
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
         <div>
           <div style="font-size:14px;font-weight:700;color:var(--white-full);">✅ Suggested Action Tasks</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${tasks.length} tasks extracted from this analysis — add individually or all at once</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">
+            ${tasks.length} tasks from this analysis — click title for details, or add directly
+          </div>
         </div>
         <button class="btn btn-primary" style="margin-left:auto;font-size:11px;padding:6px 14px;"
           onclick="addAllTasks('${source}', ${sourceId || 'null'}, ${tasksJson})">
@@ -949,6 +961,150 @@ function renderTaskExtract(tasks, source, sourceId) {
       </div>
       <div style="display:flex;flex-direction:column;gap:2px;">${items}</div>
     </div>`;
+}
+
+// ── Task Detail Modal ─────────────────────────────────────────────────────────
+
+let _detailTaskIdx = null;
+let _detailSource  = null;
+let _detailSourceId = null;
+
+function openTaskDetail(idx, source, sourceId) {
+  const task = _taskDetailList[idx];
+  if (!task) return;
+
+  _detailTaskIdx  = idx;
+  _detailSource   = source;
+  _detailSourceId = sourceId;
+
+  const priorityColor = { high: 'var(--red)', medium: 'var(--amber)', low: 'var(--blue)' };
+  const priorityBg    = { high: 'rgba(255,77,106,0.15)', medium: 'rgba(245,158,11,0.15)', low: 'rgba(59,158,255,0.12)' };
+  const sourceLabel   = { research: '🔬 Research', recommend: '🧭 Recommendation', daily_brief: '☀️ Daily Brief', manual: '✏️ Manual' };
+  const pc = priorityColor[task.priority] || 'var(--blue)';
+  const pb = priorityBg[task.priority]    || 'rgba(59,158,255,0.12)';
+
+  // What to do — generate actionable steps from the task
+  const whatToDo = buildWhatToDo(task);
+
+  document.getElementById('task-detail-title').textContent    = task.title;
+  document.getElementById('task-detail-category').textContent = task.category || 'Strategy';
+  document.getElementById('task-detail-source').textContent   = sourceLabel[source] || source;
+  document.getElementById('task-detail-priority').textContent = task.priority.toUpperCase();
+  document.getElementById('task-detail-priority').style.cssText =
+    `font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;background:${pb};color:${pc};text-transform:uppercase;`;
+  document.getElementById('task-detail-body').innerHTML = whatToDo;
+
+  // Check if already added
+  const addBtn = document.getElementById('task-detail-add-btn');
+  const existingBtn = document.getElementById(`btn-tex-${source}-${idx}`);
+  if (existingBtn && existingBtn.disabled) {
+    addBtn.textContent = '✓ Already Added';
+    addBtn.disabled = true;
+    addBtn.style.background = 'var(--teal)';
+    addBtn.style.color = '#000';
+  } else {
+    addBtn.textContent = '+ Add to Tasks';
+    addBtn.disabled = false;
+    addBtn.style.background = '';
+    addBtn.style.color = '';
+  }
+
+  document.getElementById('task-detail-modal').style.display = 'flex';
+}
+
+function buildWhatToDo(task) {
+  const lines = [];
+
+  // Main action
+  lines.push(`<div style="margin-bottom:14px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">What to Do</div>
+    <div style="font-size:13.5px;color:var(--text-primary);line-height:1.7;">${escHtml(task.title)}</div>
+  </div>`);
+
+  // Context / description
+  if (task.description && task.description.trim()) {
+    lines.push(`<div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Context</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">${escHtml(task.description)}</div>
+    </div>`);
+  }
+
+  // Why it matters — derived from category
+  const whyMap = {
+    '90-Day Plan':   'This is a time-bound action from the 90-day execution plan. Completing it on schedule keeps Botivate on track for quarterly goals.',
+    'Roadmap':       'This action is part of the strategic roadmap. Skipping or delaying it creates downstream blockers for future milestones.',
+    'Investment':    'This involves resource allocation. Timely investment decisions directly impact revenue potential and growth rate.',
+    'Go-to-Market':  'This is a market-facing action. Every week of delay gives competitors more time to establish presence in that segment.',
+    'Business Coach':'This addresses a team or leadership behaviour. Fixing it multiplies the effectiveness of everything else Botivate does.',
+    'Team Focus':    'This determines where team energy goes. Misaligned focus is the #1 reason early-stage companies stall.',
+    'Gap Fix':       'This closes a known capability or visibility gap. Until fixed, this gap costs Botivate deals, talent, and credibility.',
+    'Next Steps':    'This is an immediate next step from the CFO analysis. It should be assigned to a person and given a deadline today.',
+    'Strategy':      'This is a strategic recommendation from the AI CFO. Acting on it moves Botivate closer to its growth targets.',
+  };
+  const why = whyMap[task.category] || whyMap['Strategy'];
+  lines.push(`<div style="margin-bottom:14px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Why It Matters</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">${why}</div>
+  </div>`);
+
+  // Suggested owner
+  const ownerMap = {
+    'Investment':    'Kavit Passary (Business & Finance)',
+    'Business Coach':'Satyendra Tandan (Product & Team)',
+    'Team Focus':    'Satyendra Tandan (Product & Team)',
+    'Go-to-Market':  'Sales / Marketing Lead',
+    '90-Day Plan':   'Assign to relevant founder or team lead',
+    'Gap Fix':       'Tech Lead or designated owner',
+  };
+  const owner = ownerMap[task.category] || 'Assign to a founder or team lead';
+  lines.push(`<div style="display:flex;gap:24px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Suggested Owner</div>
+      <div style="font-size:13px;color:var(--text-primary);">${owner}</div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Priority</div>
+      <div style="font-size:13px;color:var(--text-primary);text-transform:capitalize;">${task.priority} — ${task.priority === 'high' ? 'Do this week' : task.priority === 'medium' ? 'Do this month' : 'Plan for next quarter'}</div>
+    </div>
+  </div>`);
+
+  return lines.join('');
+}
+
+function closeTaskDetailModal() {
+  document.getElementById('task-detail-modal').style.display = 'none';
+  _detailTaskIdx = null;
+}
+
+async function addFromDetailModal() {
+  if (_detailTaskIdx === null) return;
+  const task = _taskDetailList[_detailTaskIdx];
+  const btn  = document.getElementById('task-detail-add-btn');
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    await apiFetch('/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: task.title,
+        description: task.description || '',
+        source: _detailSource,
+        source_id: _detailSourceId,
+        priority: task.priority,
+      }),
+    });
+    btn.textContent = '✓ Added';
+    btn.style.background = 'var(--teal)';
+    btn.style.color = '#000';
+    // Also mark the list button
+    const listBtn = document.getElementById(`btn-tex-${_detailSource}-${_detailTaskIdx}`);
+    if (listBtn) { listBtn.textContent = '✓'; listBtn.disabled = true; listBtn.style.background = 'var(--teal)'; listBtn.style.color = '#000'; }
+  } catch (e) {
+    btn.textContent = '+ Add to Tasks';
+    btn.disabled = false;
+    alert('Error: ' + e.message);
+  }
 }
 
 async function addTaskFromExtract(idx, source, sourceId, btn) {

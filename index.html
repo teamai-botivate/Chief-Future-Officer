@@ -436,6 +436,31 @@
   </div>
 </div>
 
+<!-- ── Task Detail Modal ─────────────────────────────────────────────────── -->
+<div id="task-detail-modal" style="display:none;">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-header">
+      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:10px;background:var(--bg-elevated);border:1px solid var(--border);
+            border-radius:10px;padding:2px 8px;color:var(--text-muted);" id="task-detail-category">Strategy</span>
+          <span style="font-size:10px;" id="task-detail-source"></span>
+          <span id="task-detail-priority"></span>
+        </div>
+        <div class="modal-title" id="task-detail-title" style="font-size:15px;line-height:1.5;"></div>
+      </div>
+      <button class="modal-close" onclick="closeTaskDetailModal()">✕</button>
+    </div>
+
+    <div id="task-detail-body" style="margin-top:4px;display:flex;flex-direction:column;gap:14px;"></div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;">
+      <button class="btn btn-ghost" onclick="closeTaskDetailModal()">Close</button>
+      <button class="btn btn-primary" id="task-detail-add-btn" onclick="addFromDetailModal()">+ Add to Tasks</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── Complete Task Modal ───────────────────────────────────────────────── -->
 <div id="complete-modal" style="display:none;">
   <div class="modal-box" style="max-width:420px;">

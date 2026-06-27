@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 
-from database import init_db, get_db, ResearchLog, Recommendation, DailyBrief, BriefSchedule
+from database import init_db, get_db, ResearchLog, Recommendation, DailyBrief, BriefSchedule, Task
 from ai_engine import run_research, run_recommendation, run_strategic_cfo_analysis
 
 load_dotenv()
@@ -46,6 +46,18 @@ class ResearchRequest(BaseModel):
 
 class RecommendRequest(BaseModel):
     business_goal: str
+
+
+class TaskCreate(BaseModel):
+    title: str
+    description: str = ""
+    source: str = "manual"
+    source_id: int = None
+    priority: str = "medium"
+
+
+class TaskComplete(BaseModel):
+    notes: str = ""
 
 
 class ScheduleUpdate(BaseModel):
@@ -355,6 +367,87 @@ def update_schedule(req: ScheduleUpdate, db: Session = Depends(get_db)):
         "custom_questions": json.loads(sched.custom_questions),
         "updated_at": sched.updated_at.isoformat(),
     }
+
+
+# ── Tasks ─────────────────────────────────────────────────────────────────────
+
+def _task_dict(t: Task) -> dict:
+    return {
+        "id": t.id,
+        "title": t.title,
+        "description": t.description or "",
+        "source": t.source,
+        "source_id": t.source_id,
+        "status": t.status,
+        "priority": t.priority,
+        "created_at": t.created_at.isoformat() if t.created_at else "",
+        "completed_at": t.completed_at.isoformat() if t.completed_at else None,
+        "notes": t.notes or "",
+    }
+
+
+@app.get("/api/tasks")
+def get_tasks(db: Session = Depends(get_db)):
+    pending = db.query(Task).filter(Task.status == "pending").order_by(Task.created_at.desc()).all()
+    done    = db.query(Task).filter(Task.status == "done").order_by(Task.completed_at.desc()).limit(50).all()
+    return {
+        "pending": [_task_dict(t) for t in pending],
+        "done":    [_task_dict(t) for t in done],
+    }
+
+
+@app.post("/api/tasks")
+def create_task(req: TaskCreate, db: Session = Depends(get_db)):
+    if not req.title.strip():
+        raise HTTPException(status_code=400, detail="Title cannot be empty")
+    task = Task(
+        title=req.title.strip(),
+        description=req.description.strip(),
+        source=req.source,
+        source_id=req.source_id,
+        priority=req.priority,
+        created_at=datetime.utcnow(),
+    )
+    db.add(task)
+    db.commit()
+    db.refresh(task)
+    return _task_dict(task)
+
+
+@app.post("/api/tasks/{task_id}/complete")
+def complete_task(task_id: int, req: TaskComplete, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.status = "done"
+    task.completed_at = datetime.utcnow()
+    task.notes = req.notes.strip()
+    db.commit()
+    db.refresh(task)
+    return _task_dict(task)
+
+
+@app.post("/api/tasks/{task_id}/reopen")
+def reopen_task(task_id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.status = "pending"
+    task.completed_at = None
+    task.notes = ""
+    db.commit()
+    db.refresh(task)
+    return _task_dict(task)
+
+
+@app.delete("/api/tasks/{task_id}")
+def delete_task(task_id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    db.delete(task)
+    db.commit()
+    return {"ok": True}
 
 
 # ── Logs ───────────────────────────────────────────────────────────────────────

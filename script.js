@@ -27,12 +27,14 @@ function showScreen(id) {
     history:   'Company History',
     research:  'AI Research',
     recommend: 'Strategic Recommendations',
+    tasks:     'Strategic Tasks',
     logs:      'Execution Logs',
   }[id] || id;
 
   if (id === 'history')   loadHistory();
   if (id === 'logs')      loadLogs();
   if (id === 'dashboard') loadDashboardHistory();
+  if (id === 'tasks')     loadTasks();
 }
 
 // ── API helpers ───────────────────────────────────────────────────────────────
@@ -290,6 +292,7 @@ async function runResearch() {
 function renderResearchResult(data, container) {
   const analysisHtml = renderAnalysis(data.analysis);
   const sourcesHtml  = renderSources(data.sources);
+  const tasks = extractTasks(data.analysis, 'research', data.id);
 
   container.innerHTML = `
     <div class="result-panel">
@@ -300,6 +303,7 @@ function renderResearchResult(data, container) {
       <div class="result-body">
         <div class="analysis-text">${analysisHtml}</div>
         ${sourcesHtml}
+        ${renderTaskExtract(tasks, 'research', data.id)}
       </div>
     </div>`;
 }
@@ -359,6 +363,7 @@ function renderRecommendResult(data, container) {
   const priorityClass = 'priority-' + (data.priority || 'medium').toLowerCase();
   const analysisHtml  = renderAnalysis(data.analysis);
   const sourcesHtml   = renderSources(data.sources);
+  const tasks = extractTasks(data.analysis, 'recommend', data.id);
 
   container.innerHTML = `
     <div class="result-panel">
@@ -373,6 +378,7 @@ function renderRecommendResult(data, container) {
         </div>
         <div class="analysis-text">${analysisHtml}</div>
         ${sourcesHtml}
+        ${renderTaskExtract(tasks, 'recommend', data.id)}
       </div>
     </div>`;
 }
@@ -779,7 +785,269 @@ async function saveSchedule() {
 document.addEventListener('click', e => {
   const modal = document.getElementById('schedule-modal');
   if (e.target === modal) closeScheduleModal();
+  const cm = document.getElementById('complete-modal');
+  if (e.target === cm) closeCompleteModal();
 });
+
+// ── Task Extraction ───────────────────────────────────────────────────────────
+
+function extractTasks(analysisText, source, sourceId) {
+  if (!analysisText) return [];
+  const tasks = [];
+  const lines = analysisText.split('\n');
+  let inRoadmap = false;
+  let inNextSteps = false;
+  let in90Day = false;
+
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) continue;
+
+    // Detect action sections
+    const upper = t.toUpperCase();
+    if (/ROADMAP|NEXT STEP|ACTION PLAN|90.DAY|WEEK 1|WEEK 2|MONTH 2|MONTH 3|IMMEDIATE ACTION/.test(upper)) {
+      inRoadmap = true; inNextSteps = true; in90Day = true;
+    }
+
+    // Collect numbered items and bullets as tasks
+    const isBullet = t.startsWith('- ') || t.startsWith('* ') || t.startsWith('• ');
+    const isNumbered = /^\d+[\.\)]\s/.test(t);
+    const isWeekMonth = /^(Week|Month|Day)\s/i.test(t);
+
+    if (isBullet || isNumbered || isWeekMonth) {
+      let text = t.replace(/^[-*•]\s/, '').replace(/^\d+[\.\)]\s/, '').replace(/^(Week|Month|Day)\s[\d\-]+:\s*/i, '').trim();
+      // Only include lines that look like actions (contain a verb or instruction)
+      if (text.length > 15 && text.length < 300) {
+        tasks.push({ title: text, priority: inferPriority(text) });
+      }
+    }
+  }
+
+  // Deduplicate and cap at 12
+  const seen = new Set();
+  return tasks.filter(t => {
+    const key = t.title.slice(0, 60);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 12);
+}
+
+function inferPriority(text) {
+  const t = text.toLowerCase();
+  if (/immediate|urgent|now|this week|week 1|asap|critical/.test(t)) return 'high';
+  if (/month 3|long.term|eventually|consider|explore/.test(t)) return 'low';
+  return 'medium';
+}
+
+function renderTaskExtract(tasks, source, sourceId) {
+  if (!tasks || tasks.length === 0) return '';
+  const items = tasks.map((task, i) => `
+    <div class="task-extract-item" id="tex-${source}-${sourceId}-${i}">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;color:var(--text-primary);line-height:1.5;">${escHtml(task.title)}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Priority: <span class="priority-dot priority-${task.priority}">${task.priority}</span></div>
+      </div>
+      <button class="btn-add-task" onclick="addTaskFromExtract(${i}, '${source}', ${sourceId || 'null'}, this)"
+        title="Add to Tasks">+ Add</button>
+    </div>`).join('');
+
+  return `
+    <div class="task-extract-box" style="margin-top:20px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="font-size:14px;font-weight:700;color:var(--white-full);">✅ Suggested Tasks</span>
+        <span style="font-size:11px;color:var(--text-muted);">— extracted from this analysis</span>
+        <button class="btn btn-primary" style="margin-left:auto;font-size:11px;padding:5px 12px;"
+          onclick="addAllTasks('${source}', ${sourceId || 'null'}, ${JSON.stringify(tasks).replace(/"/g,'&quot;')})">
+          + Add All
+        </button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">${items}</div>
+    </div>`;
+}
+
+async function addTaskFromExtract(idx, source, sourceId, btn) {
+  const row = btn.closest('.task-extract-item');
+  const titleEl = row.querySelector('div[style*="font-size:13px"]');
+  const priorityEl = row.querySelector('.priority-dot');
+  const title = titleEl.textContent.trim();
+  const priority = priorityEl.textContent.trim();
+
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    await apiFetch('/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, source, source_id: sourceId, priority }),
+    });
+    btn.textContent = '✓ Added';
+    btn.style.background = 'var(--teal)';
+    btn.style.color = '#000';
+    btn.disabled = true;
+  } catch (e) {
+    btn.textContent = '+ Add';
+    btn.disabled = false;
+    alert('Error: ' + e.message);
+  }
+}
+
+async function addAllTasks(source, sourceId, tasks) {
+  for (const task of tasks) {
+    try {
+      await apiFetch('/api/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: task.title, source, source_id: sourceId, priority: task.priority }),
+      });
+    } catch (_) {}
+  }
+  // Mark all buttons as added
+  document.querySelectorAll('.btn-add-task').forEach(btn => {
+    btn.textContent = '✓ Added';
+    btn.style.background = 'var(--teal)';
+    btn.style.color = '#000';
+    btn.disabled = true;
+  });
+  alert(`✓ ${tasks.length} tasks added! Go to Tasks screen to manage them.`);
+}
+
+// ── Tasks Screen ──────────────────────────────────────────────────────────────
+
+let _currentTaskTab = 'pending';
+
+function switchTaskTab(tab) {
+  _currentTaskTab = tab;
+  document.getElementById('tasks-pending-view').style.display = tab === 'pending' ? 'block' : 'none';
+  document.getElementById('tasks-done-view').style.display    = tab === 'done' ? 'block' : 'none';
+  document.querySelectorAll('.task-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+async function loadTasks() {
+  const pendingEl = document.getElementById('tasks-pending-content');
+  const doneEl    = document.getElementById('tasks-done-content');
+  pendingEl.innerHTML = '<div class="loader visible"><div class="spinner"></div><span>Loading…</span></div>';
+  doneEl.innerHTML    = '<div class="loader visible"><div class="spinner"></div><span>Loading…</span></div>';
+
+  try {
+    const data = await apiFetch('/api/tasks');
+    const pending = data.pending || [];
+    const done    = data.done    || [];
+
+    document.getElementById('pending-count').textContent = pending.length ? ` (${pending.length})` : '';
+    document.getElementById('done-count').textContent    = done.length    ? ` (${done.length})`    : '';
+
+    pendingEl.innerHTML = pending.length ? renderTaskList(pending, false) : `
+      <div class="empty-state">
+        <div class="empty-icon">✅</div>
+        <div class="empty-title">No pending tasks</div>
+        <div class="empty-desc">Run a Research or Recommendation and add tasks from the results.</div>
+      </div>`;
+
+    doneEl.innerHTML = done.length ? renderTaskList(done, true) : `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">No completed tasks yet</div>
+        <div class="empty-desc">Complete a pending task to see it here.</div>
+      </div>`;
+  } catch (e) {
+    pendingEl.innerHTML = `<div class="card"><p style="color:var(--accent3)">Error: ${e.message}</p></div>`;
+    doneEl.innerHTML = pendingEl.innerHTML;
+  }
+}
+
+function renderTaskList(tasks, isDone) {
+  return tasks.map(t => {
+    const sourceLabel = { research: '🔬 Research', recommend: '🧭 Recommend', daily_brief: '☀️ Daily Brief', manual: '✏️ Manual' }[t.source] || t.source;
+    const createdDate = t.created_at ? new Date(t.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
+    const completedDate = t.completed_at ? new Date(t.completed_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
+
+    const actions = isDone
+      ? `<div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;">
+           <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="reopenTask(${t.id})">↺ Reopen</button>
+           <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;color:var(--red);" onclick="deleteTask(${t.id})">✕</button>
+         </div>`
+      : `<div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;">
+           <button class="btn btn-primary" style="font-size:11px;padding:5px 12px;" onclick="openCompleteModal(${t.id})">✓ Done</button>
+           <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;color:var(--red);" onclick="deleteTask(${t.id})">✕</button>
+         </div>`;
+
+    const completionNote = isDone && t.notes ? `<div style="font-size:11px;color:var(--teal);margin-top:4px;">📝 ${escHtml(t.notes)}</div>` : '';
+    const completionMeta = isDone ? `<span style="color:var(--teal);">✓ Completed ${completedDate}</span>` : `Added ${createdDate}`;
+
+    return `<div class="task-card ${isDone ? 'task-done' : ''}">
+      <div class="task-check-col">
+        ${isDone
+          ? `<div class="task-check done">✓</div>`
+          : `<button class="task-check pending" onclick="openCompleteModal(${t.id})" title="Mark done"></button>`}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div class="task-title ${isDone ? 'strikethrough' : ''}">${escHtml(t.title)}</div>
+        ${t.description ? `<div style="font-size:12px;color:var(--text-muted);margin-top:3px;">${escHtml(t.description)}</div>` : ''}
+        ${completionNote}
+        <div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">
+          <span class="source-label">${sourceLabel}</span>
+          <span class="priority-dot priority-${t.priority}">${t.priority}</span>
+          <span style="font-size:11px;color:var(--text-muted);">${completionMeta}</span>
+        </div>
+      </div>
+      ${actions}
+    </div>`;
+  }).join('');
+}
+
+// ── Complete Modal ────────────────────────────────────────────────────────────
+
+let _completingTaskId = null;
+
+function openCompleteModal(taskId) {
+  _completingTaskId = taskId;
+  document.getElementById('complete-notes').value = '';
+  document.getElementById('complete-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('complete-notes').focus(), 100);
+}
+
+function closeCompleteModal() {
+  document.getElementById('complete-modal').style.display = 'none';
+  _completingTaskId = null;
+}
+
+async function confirmComplete() {
+  if (!_completingTaskId) return;
+  const notes = document.getElementById('complete-notes').value.trim();
+  const btn = document.getElementById('confirm-complete-btn');
+  btn.disabled = true;
+  try {
+    await apiFetch(`/api/tasks/${_completingTaskId}/complete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notes }),
+    });
+    closeCompleteModal();
+    loadTasks();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function reopenTask(taskId) {
+  if (!confirm('Move this task back to Pending?')) return;
+  try {
+    await apiFetch(`/api/tasks/${taskId}/reopen`, { method: 'POST' });
+    loadTasks();
+  } catch (e) { alert('Error: ' + e.message); }
+}
+
+async function deleteTask(taskId) {
+  if (!confirm('Delete this task permanently?')) return;
+  try {
+    await apiFetch(`/api/tasks/${taskId}`, { method: 'DELETE' });
+    loadTasks();
+  } catch (e) { alert('Error: ' + e.message); }
+}
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 

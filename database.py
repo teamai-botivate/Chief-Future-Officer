@@ -52,6 +52,20 @@ class BriefSchedule(Base):
     updated_at = Column(DateTime, default=datetime.utcnow)
 
 
+class Task(Base):
+    __tablename__ = "tasks"
+    id            = Column(Integer, primary_key=True, index=True)
+    title         = Column(Text, nullable=False)
+    description   = Column(Text)
+    source        = Column(String(50))   # "research" | "recommend" | "daily_brief"
+    source_id     = Column(Integer)      # FK to source record (optional)
+    status        = Column(String(20), default="pending")  # "pending" | "done"
+    priority      = Column(String(20), default="medium")   # "high" | "medium" | "low"
+    created_at    = Column(DateTime, default=datetime.utcnow)
+    completed_at  = Column(DateTime, nullable=True)
+    notes         = Column(Text)         # completion notes
+
+
 def init_db():
     Base.metadata.create_all(bind=engine)
 

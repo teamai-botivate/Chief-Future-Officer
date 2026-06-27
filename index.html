@@ -39,6 +39,9 @@
       <button class="nav-item" id="nav-recommend" onclick="showScreen('recommend')">
         <span class="nav-icon">🧭</span> Recommendations
       </button>
+      <button class="nav-item" id="nav-tasks" onclick="showScreen('tasks')">
+        <span class="nav-icon">✅</span> Tasks
+      </button>
       <button class="nav-item" id="nav-logs" onclick="showScreen('logs')">
         <span class="nav-icon">📋</span> Logs
       </button>
@@ -319,6 +322,32 @@
         <div id="recommend-result" style="display:none;"></div>
       </div>
 
+      <!-- ── TASKS ──────────────────────────────────────────────────────── -->
+      <div class="screen" id="screen-tasks">
+        <div class="section-heading">Strategic Tasks</div>
+        <p class="section-sub">Actions extracted from AI recommendations. Check off as you complete them — history is tracked automatically.</p>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost task-tab active" id="tab-pending" onclick="switchTaskTab('pending')">⏳ Pending <span id="pending-count" class="task-count"></span></button>
+            <button class="btn btn-ghost task-tab" id="tab-done" onclick="switchTaskTab('done')">✅ Completed <span id="done-count" class="task-count"></span></button>
+          </div>
+          <button class="btn btn-ghost" onclick="loadTasks()">↺ Refresh</button>
+        </div>
+
+        <div id="tasks-pending-view">
+          <div id="tasks-pending-content">
+            <div class="loader visible"><div class="spinner"></div><span>Loading tasks…</span></div>
+          </div>
+        </div>
+
+        <div id="tasks-done-view" style="display:none;">
+          <div id="tasks-done-content">
+            <div class="loader visible"><div class="spinner"></div><span>Loading history…</span></div>
+          </div>
+        </div>
+      </div>
+
       <!-- ── LOGS ───────────────────────────────────────────────────────── -->
       <div class="screen" id="screen-logs">
         <div class="section-heading">Execution Logs</div>
@@ -403,6 +432,24 @@
     <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px;">
       <button class="btn btn-ghost" onclick="closeScheduleModal()">Cancel</button>
       <button class="btn btn-primary" onclick="saveSchedule()">💾 Save Schedule</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Complete Task Modal ───────────────────────────────────────────────── -->
+<div id="complete-modal" style="display:none;">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-title">✅ Mark Task Complete</div>
+      <button class="modal-close" onclick="closeCompleteModal()">✕</button>
+    </div>
+    <div class="input-group">
+      <label class="input-label">Completion Notes (optional)</label>
+      <textarea id="complete-notes" rows="3" placeholder="What did you do? Any outcome or learnings?"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+      <button class="btn btn-ghost" onclick="closeCompleteModal()">Cancel</button>
+      <button class="btn btn-primary" id="confirm-complete-btn" onclick="confirmComplete()">✓ Mark Done</button>
     </div>
   </div>
 </div>

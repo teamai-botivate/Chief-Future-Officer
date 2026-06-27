@@ -625,7 +625,8 @@ async function loadDailyBrief() {
     dateEl.textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
       + ` · ${modeLabel}` + (data.cached ? ' · Cached' : ' · Just generated');
 
-    body.innerHTML = `<div class="analysis-text">${renderAnalysis(data.analysis)}</div>${renderSources(data.sources)}`;
+    const tasks = extractTasks(data.analysis, 'daily_brief', null);
+    body.innerHTML = `<div class="analysis-text">${renderAnalysis(data.analysis)}</div>${renderSources(data.sources)}${renderTaskExtract(tasks, 'daily_brief', null)}`;
   } catch (e) {
     body.innerHTML = `<p style="color:var(--accent3)">Could not load brief: ${e.message}</p>`;
     dateEl.textContent = 'Error';
@@ -643,7 +644,8 @@ async function regenerateBrief() {
     const d = new Date(data.date);
     const modeLabel = data.mode === 'full' ? '14-Point CFO Analysis' : 'Custom Research';
     dateEl.textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) + ` · ${modeLabel} · Just regenerated`;
-    body.innerHTML = `<div class="analysis-text">${renderAnalysis(data.analysis)}</div>${renderSources(data.sources)}`;
+    const tasks = extractTasks(data.analysis, 'daily_brief', null);
+    body.innerHTML = `<div class="analysis-text">${renderAnalysis(data.analysis)}</div>${renderSources(data.sources)}${renderTaskExtract(tasks, 'daily_brief', null)}`;
   } catch (e) {
     body.innerHTML = `<p style="color:var(--accent3)">Error: ${e.message}</p>`;
   }

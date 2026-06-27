@@ -1,8 +1,8 @@
 /* ============================================================
-   Chief Future Officer — Navy Blue Professional Theme
+   Chief Future Officer — White + Navy Professional Theme
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -10,47 +10,94 @@ html { -webkit-text-size-adjust: 100%; }
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 :root {
-  /* Navy blue backgrounds — deep to elevated */
-  --bg-base:      #020b18;
-  --bg-surface:   #051525;
-  --bg-elevated:  #071d30;
-  --bg-card:      #0a2240;
-  --bg-card-hover:#0d2a4e;
-  --border:       #0f3260;
-  --border-light: #1a4070;
+  /* ── Backgrounds: Navy → White gradient system ── */
+  --bg-base:       #03080f;   /* deepest navy-black          */
+  --bg-surface:    #060e1a;   /* sidebar / topbar            */
+  --bg-elevated:   #0b1829;   /* inputs, secondary surfaces  */
+  --bg-card:       #0f2039;   /* cards                       */
+  --bg-card-hover: #132645;   /* card hover                  */
+  --border:        #1a3352;   /* default border              */
+  --border-light:  #254870;   /* highlighted border          */
 
-  /* Primary accent — bright electric blue */
-  --accent:        #2d9cff;
-  --accent-dim:    rgba(45,156,255,0.12);
-  --accent-glow:   rgba(45,156,255,0.22);
-  --accent-border: rgba(45,156,255,0.35);
+  /* ── White text on navy ── */
+  --text-primary:   #ffffff;
+  --text-secondary: #8cafc8;
+  --text-muted:     #3d607e;
+  --text-disabled:  #1e3a52;
 
-  /* Secondary accents */
-  --accent2:      #00e5c3;          /* teal-green  */
-  --accent2-dim:  rgba(0,229,195,0.10);
-  --accent3:      #ff5a6e;          /* red         */
-  --accent3-dim:  rgba(255,90,110,0.10);
-  --accent4:      #ffb830;          /* amber       */
-  --accent4-dim:  rgba(255,184,48,0.10);
-  --accent5:      #a78bfa;          /* soft violet */
-  --accent5-dim:  rgba(167,139,250,0.10);
+  /* ── Color Coding System ──────────────────────────────────
+     Each color has a clear semantic purpose:
+     BLUE    → primary actions, links, AI output
+     TEAL    → success, opportunities, positive signals
+     RED     → threats, alerts, warnings
+     AMBER   → priority, caution, medium signals
+     VIOLET  → insights, strategic, special callouts
+     WHITE   → headings, emphasis, key numbers
+  ─────────────────────────────────────────────────────────── */
 
-  /* Text */
-  --text-primary:   #e8f4ff;
-  --text-secondary: #7096b8;
-  --text-muted:     #2e5070;
-  --text-disabled:  #1a3550;
+  /* Blue — Primary / AI / Actions */
+  --blue:        #3b9eff;
+  --blue-bright: #60b4ff;
+  --blue-dim:    rgba(59,158,255,0.12);
+  --blue-glow:   rgba(59,158,255,0.20);
+  --blue-border: rgba(59,158,255,0.30);
 
-  /* Layout */
+  /* Teal — Opportunities / Success / Positive */
+  --teal:        #00d4a8;
+  --teal-bright: #00f0c0;
+  --teal-dim:    rgba(0,212,168,0.12);
+  --teal-border: rgba(0,212,168,0.30);
+
+  /* Red — Threats / Danger / Alerts */
+  --red:         #ff4d6a;
+  --red-bright:  #ff6b83;
+  --red-dim:     rgba(255,77,106,0.12);
+  --red-border:  rgba(255,77,106,0.30);
+
+  /* Amber — Priority / Caution / Medium */
+  --amber:       #f59e0b;
+  --amber-bright:#fbbf24;
+  --amber-dim:   rgba(245,158,11,0.12);
+  --amber-border:rgba(245,158,11,0.30);
+
+  /* Violet — Strategic Insights / Special */
+  --violet:       #a78bfa;
+  --violet-bright:#c4b5fd;
+  --violet-dim:   rgba(167,139,250,0.12);
+  --violet-border:rgba(167,139,250,0.30);
+
+  /* White tones — emphasis */
+  --white-full:   #ffffff;
+  --white-90:     rgba(255,255,255,0.90);
+  --white-60:     rgba(255,255,255,0.60);
+  --white-20:     rgba(255,255,255,0.20);
+  --white-08:     rgba(255,255,255,0.08);
+  --white-04:     rgba(255,255,255,0.04);
+
+  /* ── Aliases for legacy variables ── */
+  --accent:        var(--blue);
+  --accent-dim:    var(--blue-dim);
+  --accent-glow:   var(--blue-glow);
+  --accent-border: var(--blue-border);
+  --accent2:       var(--teal);
+  --accent2-dim:   var(--teal-dim);
+  --accent3:       var(--red);
+  --accent3-dim:   var(--red-dim);
+  --accent4:       var(--amber);
+  --accent4-dim:   var(--amber-dim);
+  --accent5:       var(--violet);
+  --accent5-dim:   var(--violet-dim);
+
+  /* ── Layout ── */
   --sidebar-w:  256px;
   --topbar-h:   58px;
   --radius-xl:  16px;
   --radius:     12px;
   --radius-sm:  8px;
   --radius-xs:  6px;
-  --shadow-sm:  0 1px 4px rgba(0,0,0,0.5);
-  --shadow:     0 4px 20px rgba(0,0,0,0.6);
-  --shadow-lg:  0 16px 48px rgba(0,0,0,0.7);
+  --shadow-sm:  0 1px 4px rgba(0,0,0,0.6);
+  --shadow:     0 4px 20px rgba(0,0,0,0.7);
+  --shadow-lg:  0 16px 48px rgba(0,0,0,0.8);
   --transition: 0.18s ease;
 }
 
@@ -70,8 +117,9 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(45,156,255,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0,229,195,0.03) 0%, transparent 60%);
+    radial-gradient(ellipse 70% 50% at 15% 0%,   rgba(59,158,255,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 100%,  rgba(0,212,168,0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%,   rgba(167,139,250,0.02) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -97,7 +145,7 @@ body::before {
 /* ── Sidebar ────────────────────────────────────────────────── */
 .sidebar {
   width: var(--sidebar-w);
-  background: linear-gradient(180deg, #040f1e 0%, #051525 100%);
+  background: linear-gradient(180deg, #050d1a 0%, #060e1a 60%, #03080f 100%);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -267,7 +315,7 @@ body::before {
 /* ── Topbar ─────────────────────────────────────────────────── */
 .topbar {
   height: var(--topbar-h);
-  background: linear-gradient(90deg, #051525 0%, #040f1e 100%);
+  background: linear-gradient(90deg, #060e1a 0%, #03080f 100%);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -514,6 +562,60 @@ body::before {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ============================================================
+   COLOR CODING SYSTEM
+   Blue=AI/Primary  Teal=Opportunity  Red=Threat
+   Amber=Priority   Violet=Insight    White=Emphasis
+   ============================================================ */
+
+/* Colored info blocks */
+.block-blue   { background: var(--blue-dim);   border-left: 3px solid var(--blue);   padding: 14px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 10px; }
+.block-teal   { background: var(--teal-dim);   border-left: 3px solid var(--teal);   padding: 14px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 10px; }
+.block-red    { background: var(--red-dim);    border-left: 3px solid var(--red);    padding: 14px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 10px; }
+.block-amber  { background: var(--amber-dim);  border-left: 3px solid var(--amber);  padding: 14px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 10px; }
+.block-violet { background: var(--violet-dim); border-left: 3px solid var(--violet); padding: 14px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 10px; }
+
+/* Color label pills */
+.pill { display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:20px; font-size:10.5px; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; }
+.pill-blue   { background: var(--blue-dim);   color: var(--blue);   border:1px solid var(--blue-border);   }
+.pill-teal   { background: var(--teal-dim);   color: var(--teal);   border:1px solid var(--teal-border);   }
+.pill-red    { background: var(--red-dim);    color: var(--red);    border:1px solid var(--red-border);    }
+.pill-amber  { background: var(--amber-dim);  color: var(--amber);  border:1px solid var(--amber-border);  }
+.pill-violet { background: var(--violet-dim); color: var(--violet); border:1px solid var(--violet-border); }
+.pill-white  { background: var(--white-08);   color: var(--white-full); border:1px solid var(--white-20); }
+
+/* White emphasis headings */
+.heading-white  { color: var(--white-full);  font-weight: 800; letter-spacing: -0.3px; }
+.heading-blue   { color: var(--blue-bright); font-weight: 700; }
+.heading-teal   { color: var(--teal-bright); font-weight: 700; }
+.heading-amber  { color: var(--amber-bright);font-weight: 700; }
+.heading-red    { color: var(--red-bright);  font-weight: 700; }
+.heading-violet { color: var(--violet-bright);font-weight: 700; }
+
+/* Colored icon cards */
+.card-icon.blue   { background: var(--blue-dim); }
+.card-icon.teal   { background: var(--teal-dim); }
+.card-icon.red    { background: var(--red-dim); }
+.card-icon.amber  { background: var(--amber-dim); }
+.card-icon.violet { background: var(--violet-dim); }
+.card-icon.white  { background: var(--white-08); }
+
+/* Stat card color variants */
+.stat-card.blue-accent::before   { background: linear-gradient(90deg, var(--blue), var(--teal)); }
+.stat-card.teal-accent::before   { background: linear-gradient(90deg, var(--teal), var(--blue)); }
+.stat-card.amber-accent::before  { background: linear-gradient(90deg, var(--amber), var(--red)); }
+.stat-card.violet-accent::before { background: linear-gradient(90deg, var(--violet), var(--blue)); }
+
+/* Analysis section color coding */
+.section-title-blue   { color: var(--blue-bright)   !important; border-bottom-color: var(--blue-dim)   !important; }
+.section-title-teal   { color: var(--teal-bright)   !important; border-bottom-color: var(--teal-dim)   !important; }
+.section-title-red    { color: var(--red-bright)    !important; border-bottom-color: var(--red-dim)    !important; }
+.section-title-amber  { color: var(--amber-bright)  !important; border-bottom-color: var(--amber-dim)  !important; }
+.section-title-violet { color: var(--violet-bright) !important; border-bottom-color: var(--violet-dim) !important; }
+
+/* White divider line */
+.divider-white { border:none; border-top:1px solid var(--white-08); margin: 16px 0; }
 
 /* ── Two Column ─────────────────────────────────────────────── */
 .two-col {

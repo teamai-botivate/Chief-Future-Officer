@@ -389,26 +389,35 @@ function renderAnalysis(text) {
     const t = line.trim();
     if (!t) { html += '<div style="height:8px;"></div>'; continue; }
 
-    // ### Heading 3
+    // ### Heading 3 — color-coded by keyword
     if (t.startsWith('### ')) {
-      html += `<div style="font-size:14px;font-weight:700;color:var(--accent);margin:14px 0 6px;">${mdInline(t.slice(4))}</div>`;
+      const content = t.slice(4);
+      const color = sectionColor(content);
+      html += `<div style="font-size:13.5px;font-weight:700;color:${color};margin:18px 0 6px;display:flex;align-items:center;gap:8px;">
+        <span style="width:3px;height:14px;background:${color};border-radius:2px;display:inline-block;flex-shrink:0;"></span>
+        ${mdInline(content)}</div>`;
       continue;
     }
     // ## Heading 2
     if (t.startsWith('## ')) {
-      html += `<div style="font-size:15px;font-weight:700;color:var(--text-primary);margin:16px 0 6px;">${mdInline(t.slice(3))}</div>`;
+      html += `<div style="font-size:15px;font-weight:800;color:var(--white-full);margin:20px 0 8px;letter-spacing:-0.2px;">${mdInline(t.slice(3))}</div>`;
       continue;
     }
     // # Heading 1
     if (t.startsWith('# ')) {
-      html += `<div style="font-size:16px;font-weight:800;color:var(--text-primary);margin:18px 0 8px;">${mdInline(t.slice(2))}</div>`;
+      html += `<div style="font-size:17px;font-weight:900;color:var(--white-full);margin:22px 0 10px;letter-spacing:-0.4px;">${mdInline(t.slice(2))}</div>`;
       continue;
     }
-    // ALL CAPS section title (e.g. OPPORTUNITIES:)
+    // ALL CAPS section title (OPPORTUNITIES:, THREATS:, etc.) — color coded
     if (/^[A-Z][A-Z\s\/]{2,}:/.test(t)) {
-      html += `<span class="section-title">${t.replace(/:.*/, '')}</span>`;
-      const rest = t.replace(/^[A-Z][A-Z\s\/]+:\s*/, '');
-      if (rest) html += `<div style="display:block;margin-bottom:4px;">${mdInline(rest)}</div>`;
+      const label = t.replace(/:.*/, '').trim();
+      const color = sectionColor(label);
+      const rest  = t.replace(/^[A-Z][A-Z\s\/]+:\s*/, '');
+      html += `<div style="display:flex;align-items:center;gap:8px;margin:18px 0 8px;">
+        <span style="width:3px;height:16px;background:${color};border-radius:2px;flex-shrink:0;"></span>
+        <span style="font-size:10.5px;font-weight:800;color:${color};text-transform:uppercase;letter-spacing:1.2px;">${label}</span>
+      </div>`;
+      if (rest) html += `<div style="margin-bottom:6px;color:var(--text-secondary);font-size:13px;">${mdInline(rest)}</div>`;
       continue;
     }
     // Bullet: -, *, •
@@ -418,38 +427,53 @@ function renderAnalysis(text) {
     }
     // Numbered list
     if (/^\d+\.\s/.test(t)) {
-      const num = t.match(/^(\d+)\.\s/)[1];
+      const num     = t.match(/^(\d+)\.\s/)[1];
       const content = t.replace(/^\d+\.\s/, '');
-      html += `<div style="display:flex;gap:10px;margin-bottom:4px;">
-        <span style="color:var(--accent);font-weight:700;min-width:18px;">${num}.</span>
-        <span>${mdInline(content)}</span>
+      html += `<div style="display:flex;gap:10px;margin-bottom:5px;align-items:flex-start;">
+        <span style="background:var(--blue-dim);color:var(--blue);font-weight:700;font-size:11px;
+          min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+          justify-content:center;flex-shrink:0;margin-top:1px;">${num}</span>
+        <span style="color:var(--text-secondary);font-size:13px;line-height:1.7;">${mdInline(content)}</span>
       </div>`;
       continue;
     }
     // QUESTION: label from daily brief
     if (t.startsWith('QUESTION:')) {
-      html += `<div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Question</div>
-               <div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">${mdInline(t.slice(9).trim())}</div>`;
+      html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span class="pill pill-blue">📋 Question</span>
+      </div>
+      <div style="font-size:13px;color:var(--white-60);margin-bottom:14px;font-style:italic;">${mdInline(t.slice(9).trim())}</div>`;
       continue;
     }
     // Horizontal rule
     if (t === '---' || t === '***') {
-      html += `<hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">`;
+      html += `<hr style="border:none;border-top:1px solid var(--border-light);margin:16px 0;opacity:0.5;">`;
       continue;
     }
     // Normal paragraph
-    html += `<div style="display:block;margin-bottom:4px;color:var(--text-secondary);font-size:13px;line-height:1.8;">${mdInline(t)}</div>`;
+    html += `<div style="display:block;margin-bottom:5px;color:var(--text-secondary);font-size:13px;line-height:1.85;">${mdInline(t)}</div>`;
   }
 
   return html;
 }
 
+/* Map section keyword → color variable string */
+function sectionColor(text) {
+  const t = text.toUpperCase();
+  if (/OPPORTUNIT|GROWTH|SUCCESS|STRENGTH|POSITIVE|WHAT THIS MEANS/.test(t)) return 'var(--teal)';
+  if (/THREAT|RISK|DANGER|CHALLENGE|WEAKNESS|WATCH/.test(t))                  return 'var(--red)';
+  if (/PRIORITY|CAUTION|MEDIUM|CONSIDER|ROADMAP|RECOMMENDED|NEXT STEP/.test(t)) return 'var(--amber)';
+  if (/INSIGHT|STRATEGIC|TREND|TECHNOLOGY|COMPETI/.test(t))                   return 'var(--violet)';
+  if (/SUMMARY|EXECUTIVE|FINDING|KEY|CONCLUSION|RECOMMEND/.test(t))           return 'var(--blue)';
+  return 'var(--blue)';
+}
+
 function mdInline(text) {
   return text
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--text-primary);font-weight:600;">$1</strong>')
-    .replace(/\*(.+?)\*/g,     '<em>$1</em>')
-    .replace(/`(.+?)`/g,       '<code style="background:var(--bg-elevated);padding:1px 5px;border-radius:4px;font-size:12px;">$1</code>');
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--white-full);font-weight:700;">$1</strong>')
+    .replace(/\*(.+?)\*/g,     '<em style="color:var(--white-60);">$1</em>')
+    .replace(/`(.+?)`/g,       '<code style="background:var(--blue-dim);color:var(--blue);padding:1px 6px;border-radius:4px;font-size:11.5px;font-weight:600;">$1</code>');
 }
 
 function renderSources(sources) {

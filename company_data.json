@@ -1,15 +1,44 @@
 {
   "company": {
     "name": "Botivate",
+    "legal_name": "Botivate Services LLP",
+    "llp_registration": "ACB-6059",
     "tagline": "Every business should run itself.",
-    "founded": "Early stage — started with 2 members",
-    "headquarters": "India",
+    "founded": "June 14, 2023",
+    "headquarters": "Raipur, Chhattisgarh, India",
+    "registered_address": "LIG-53, Galaxy Greens, Sankari-3, Raipur, CG 492001",
+    "office_address": "2nd Floor, Office No. 211, CGHB Studio Complex, Shankar Nagar, Raipur, CG 492001",
     "website": "https://botivate.in",
+    "email": "info@botivate.in",
+    "team_email": "team.ai@botivate.in",
+    "phone": "+91 99930 23243",
     "industry": "Business Automation & AI",
-    "stage": "Growth Stage — 40+ team, scaling to enterprise",
-    "email": "team.ai@botivate.in",
-    "flagship_product": "AutoRocket — AI Business Operating System"
+    "stage": "Early Growth — bootstrapped, unfunded, actively hiring",
+    "flagship_product": "AutoRocket — AI Business Operating System",
+    "social": {
+      "linkedin": "https://in.linkedin.com/company/botivate",
+      "linkedin_followers": 655,
+      "facebook": "https://www.facebook.com/botivate",
+      "instagram": "https://www.instagram.com/botivate.in/"
+    }
   },
+
+  "founders": [
+    {
+      "name": "Kavit Passary",
+      "role": "Designated Partner / Co-Founder",
+      "din": "01475884",
+      "background": "Serial entrepreneur across mining, real estate, textiles, and technology sectors. Director in multiple companies including Aviorone Technologies, CTM Fashions, Kanchan Mining, Pasmin Realty, Passary Minerals, Refratech Application Services, Y3K Ventures.",
+      "expertise": "Business strategy, multi-sector operations, investor connections"
+    },
+    {
+      "name": "Satyendra Tandan",
+      "role": "Designated Partner / Founder",
+      "din": "10203291",
+      "background": "Tech founder with IT and consulting background. Core technical and product vision leader at Botivate.",
+      "expertise": "Technology, product development, business automation"
+    }
+  ],
 
   "description": "Botivate is a Business Automation and AI company. We don't sell ERP software. We help businesses run on autopilot — by understanding their processes deeply, standardizing workflows, automating operations, and layering AI on top. Our flagship product AutoRocket is an AI-first business operating system built from 70+ reusable automation modules developed from real client implementations across manufacturing, trading, hospitals, jewellery, real estate, steel, coal trading, solar, and service companies.",
 
@@ -19,10 +48,196 @@
 
   "founding_story": "Botivate started with just 2 people and a vision to solve real business problems. Instead of building software from an office, the founders worked directly at client locations — sitting with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch teams, and operators to understand root problems from the ground up. Every solved client problem was converted into a reusable automation module. This is how the company grew from 2 to 40+ professionals and 70+ modules.",
 
+  "financial_status": {
+    "funding_stage": "Unfunded / Bootstrapped",
+    "authorized_capital": "INR 10,00,000 (10 Lakh)",
+    "paid_up_capital": "INR 1,00,000 (1 Lakh)",
+    "annual_revenue": "Not publicly disclosed — update with actual figure",
+    "monthly_revenue": "Not publicly disclosed — update with actual figure",
+    "monthly_expenses": "Update with actual figure",
+    "monthly_profit_loss": "Update with actual figure",
+    "cash_in_bank": "Update with actual figure",
+    "receivables_outstanding": "Update with actual figure",
+    "mca_status": "Active LLP",
+    "efiling_status": "Inactive for e-filing as of June 2026 — needs attention",
+    "notes": "Company is bootstrapped. No VC or angel funding received. Revenue comes from client implementations and consulting."
+  },
+
+  "business_metrics": {
+    "team_size": "26-40 people (LinkedIn: 26 discoverable, internal: 40+)",
+    "started_with": 2,
+    "modules_built": "70+",
+    "industries_served": "10+",
+    "active_clients": "Update with actual number",
+    "total_clients_ever": "Update with actual number",
+    "avg_contract_value": "Update with actual figure (INR)",
+    "monthly_recurring_revenue": "Update with actual figure",
+    "client_retention_rate": "Update with actual %",
+    "nps_score": "Update with actual score",
+    "linkedin_followers": 655,
+    "implementation_approach": "Consulting + Software + Training",
+    "customer_focus": "SME and Medium Enterprises"
+  },
+
+  "clients": {
+    "note": "No public client references found. Update with real client data.",
+    "known_industries": [
+      "Manufacturing",
+      "Trading",
+      "Hospitals & Healthcare",
+      "Jewellery",
+      "Real Estate",
+      "Steel",
+      "Coal Trading",
+      "Solar Energy",
+      "Service Companies"
+    ],
+    "sample_clients": [
+      {
+        "name": "Update with real client name",
+        "industry": "Manufacturing",
+        "location": "Raipur, CG",
+        "modules_used": ["CRM", "Inventory", "Production"],
+        "contract_value": "Update",
+        "since": "Update"
+      }
+    ],
+    "target_client_profile": {
+      "size": "10-500 employees",
+      "revenue": "1 Cr to 100 Cr annual turnover",
+      "pain_points": ["Manual processes", "No real-time visibility", "WhatsApp chaos", "HR inefficiency"],
+      "decision_maker": "MD, Director, Owner, CFO"
+    }
+  },
+
+  "location_intelligence": {
+    "headquarters": "Raipur, Chhattisgarh",
+    "primary_market": "Chhattisgarh",
+    "nearby_cities_to_target": [
+      {
+        "city": "Bhilai",
+        "distance_from_raipur": "30 km",
+        "key_industries": ["Steel (SAIL BSP)", "Manufacturing", "Engineering"],
+        "opportunity": "Huge steel & manufacturing belt — AutoRocket inventory and production modules fit perfectly"
+      },
+      {
+        "city": "Durg",
+        "distance_from_raipur": "35 km",
+        "key_industries": ["Trading", "Manufacturing", "MSME"],
+        "opportunity": "Large MSME cluster, underserved by digital tools"
+      },
+      {
+        "city": "Bilaspur",
+        "distance_from_raipur": "120 km",
+        "key_industries": ["Coal trading", "Healthcare", "Education", "Government"],
+        "opportunity": "Coal trading and hospital automation — strong match with existing modules"
+      },
+      {
+        "city": "Korba",
+        "distance_from_raipur": "200 km",
+        "key_industries": ["Coal mining", "Power plants", "NTPC", "SECL"],
+        "opportunity": "Industrial automation for large PSU suppliers and contractors"
+      },
+      {
+        "city": "Rajnandgaon",
+        "distance_from_raipur": "75 km",
+        "key_industries": ["Agriculture", "Trading", "Manufacturing"],
+        "opportunity": "Untapped SME market, very few digital automation providers"
+      },
+      {
+        "city": "Jagdalpur",
+        "distance_from_raipur": "300 km",
+        "key_industries": ["Tribal trade", "Steel (Bastar)", "Agro-processing"],
+        "opportunity": "NMDC and steel ecosystem — inventory and procurement automation"
+      },
+      {
+        "city": "Nagpur",
+        "distance_from_raipur": "280 km",
+        "key_industries": ["Manufacturing", "Trading", "Healthcare", "Retail"],
+        "opportunity": "Large Maharashtra market adjacent to CG — CRM and HR modules"
+      },
+      {
+        "city": "Indore",
+        "distance_from_raipur": "470 km",
+        "key_industries": ["Manufacturing", "MSME", "IT", "Textiles"],
+        "opportunity": "MP's largest business hub — high willingness to adopt digital tools"
+      },
+      {
+        "city": "Bhopal",
+        "distance_from_raipur": "480 km",
+        "key_industries": ["Government", "Healthcare", "Education", "MSME"],
+        "opportunity": "State capital — government contractor automation, healthcare"
+      }
+    ],
+    "state_market": {
+      "chhattisgarh": {
+        "total_msme_count": "~6 lakh MSMEs",
+        "digital_adoption": "Very low — major opportunity",
+        "key_sectors": ["Steel", "Coal", "Mining", "Agriculture", "Manufacturing"],
+        "major_industrial_areas": ["Bhilai-Durg belt", "Korba industrial area", "Raipur MSME cluster"]
+      }
+    },
+    "local_competitors": [
+      {
+        "name": "Lighthouse ERP",
+        "location": "Raipur",
+        "serves": ["Raipur", "Raigarh", "Bhilai"],
+        "positioning": "Best ERP in Raipur — established player with case studies",
+        "threat_level": "High — direct competitor in home market"
+      },
+      {
+        "name": "Softweb Technologies",
+        "location": "Raipur",
+        "serves": "Chhattisgarh",
+        "positioning": "Cloud ERP, IoT, AI, ML, RPA",
+        "threat_level": "Medium — technology overlap"
+      },
+      {
+        "name": "Link Ideas",
+        "location": "Raipur",
+        "serves": "Chhattisgarh",
+        "positioning": "ERP, CRM — 10+ years experience, CA-backed",
+        "threat_level": "High — established trust, financial credibility"
+      },
+      {
+        "name": "Duplex Technologies",
+        "location": "Raipur",
+        "serves": "Raipur",
+        "positioning": "Simple, user-friendly CRM",
+        "threat_level": "Medium — lower end of market"
+      },
+      {
+        "name": "Sampark Infoways",
+        "location": "Raipur",
+        "serves": "Raipur",
+        "positioning": "Banking, mobile apps, CRM, e-commerce",
+        "threat_level": "Low — different focus"
+      }
+    ],
+    "competitor_count_local": "115+ ERP/CRM developers in Raipur-CG region"
+  },
+
+  "hiring_status": {
+    "actively_hiring": true,
+    "open_roles": [
+      "Backend Developer (Node.js)",
+      "Senior React Developer (15k-25k/month)",
+      "React Developer Intern (5k-7k/month)",
+      "Flutter App Developer (1-2 yrs exp)",
+      "R&D Team Members",
+      "AI Agent Development Interns (5k-7k/month)",
+      "Cyber Security Professionals",
+      "MIS Executive",
+      "Office Boy (5k-7k/month)"
+    ],
+    "note": "Active hiring signals growth intent but also indicates current team gaps in mobile (Flutter) and AI"
+  },
+
   "core_product": {
     "name": "AutoRocket",
     "description": "AutoRocket is an AI-first Business Operating System — positioned above traditional ERPs as the AI automation layer. It is not just ERP, not just CRM, not just AI — it is an operating system where AI manages the business. Built from 70+ proven automation modules.",
     "positioning": "Above ERPs. The AI automation layer for the entire business.",
+    "public_presence": "Zero — no app store listing, no G2/Capterra reviews, no public case studies as of June 2026",
     "key_capabilities": [
       "AI Agents that manage business workflows autonomously",
       "WhatsApp Automation for approvals, alerts and business communication",
@@ -36,65 +251,24 @@
   },
 
   "modules_built": [
-    "CRM",
-    "Sales",
-    "Purchase",
-    "Inventory",
-    "Production",
-    "HR",
-    "Attendance",
-    "Payroll",
-    "Project Management",
-    "Task Delegation",
-    "Vendor Management",
-    "WhatsApp Automation",
-    "AI Chatbots",
-    "AI Sales Agent",
-    "Director Dashboard",
-    "Business Reporting",
-    "MIS Dashboards",
-    "Google Sheets Automation",
-    "Approval Workflows",
+    "CRM", "Sales", "Purchase", "Inventory", "Production", "HR",
+    "Attendance", "Payroll", "Project Management", "Task Delegation",
+    "Vendor Management", "WhatsApp Automation", "AI Chatbots",
+    "AI Sales Agent", "Director Dashboard", "Business Reporting",
+    "MIS Dashboards", "Google Sheets Automation", "Approval Workflows",
     "AI Business Intelligence"
   ],
 
   "evolution_phases": [
-    {
-      "phase": "Starting Phase",
-      "description": "Company started with just 2 members and a vision to solve real business problems."
-    },
-    {
-      "phase": "Initial Journey",
-      "description": "Worked directly at client locations instead of building software from an office."
-    },
-    {
-      "phase": "Learning Phase",
-      "description": "Sat with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch and operators to understand root problems firsthand."
-    },
-    {
-      "phase": "Product Phase",
-      "description": "Started converting every solved client problem into reusable automation modules."
-    },
-    {
-      "phase": "Growth Phase",
-      "description": "Expanded team from 2 people to 40+ professionals."
-    },
-    {
-      "phase": "System Phase",
-      "description": "Built 70+ automation modules covering manufacturing, trading, HR, finance, CRM, production, purchase, inventory and AI."
-    },
-    {
-      "phase": "AI Phase",
-      "description": "Started integrating AI Agents, WhatsApp Automation and Business Intelligence into all products."
-    },
-    {
-      "phase": "AutoRocket Phase",
-      "description": "Began building AutoRocket as an AI-first business operating system — not an ERP replacement, but an AI automation layer above ERPs."
-    },
-    {
-      "phase": "Current",
-      "description": "Positioning Botivate as a company that helps businesses run on autopilot. Focused on medium and large enterprises. Building toward every business running itself through AI."
-    }
+    { "phase": "Starting Phase", "description": "Company started with just 2 members and a vision to solve real business problems." },
+    { "phase": "Initial Journey", "description": "Worked directly at client locations instead of building software from an office." },
+    { "phase": "Learning Phase", "description": "Sat with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch and operators to understand root problems firsthand." },
+    { "phase": "Product Phase", "description": "Started converting every solved client problem into reusable automation modules." },
+    { "phase": "Growth Phase", "description": "Expanded team from 2 people to 40+ professionals." },
+    { "phase": "System Phase", "description": "Built 70+ automation modules covering manufacturing, trading, HR, finance, CRM, production, purchase, inventory and AI." },
+    { "phase": "AI Phase", "description": "Started integrating AI Agents, WhatsApp Automation and Business Intelligence into all products." },
+    { "phase": "AutoRocket Phase", "description": "Began building AutoRocket as an AI-first business operating system — not an ERP replacement, but an AI automation layer above ERPs." },
+    { "phase": "Current (2026)", "description": "Positioning Botivate as a company that helps businesses run on autopilot. Focused on SME and medium enterprises. Actively hiring for mobile (Flutter) and AI development. Brand presence still minimal — zero public reviews or case studies." }
   ],
 
   "vision_evolution": [
@@ -116,28 +290,9 @@
   ],
 
   "industries_served": [
-    "Manufacturing",
-    "Trading",
-    "Hospitals & Healthcare",
-    "Jewellery",
-    "Real Estate",
-    "Steel",
-    "Coal Trading",
-    "Solar Energy",
-    "Service Companies",
-    "Large Industrial Groups"
-  ],
-
-  "customer_journey": [
-    "Started with small businesses",
-    "Moved to manufacturing",
-    "Expanded to trading",
-    "Entered hospitals",
-    "Entered jewellery",
-    "Added real estate",
-    "Added steel and coal trading",
-    "Added solar and service companies",
-    "Currently focused on medium and large enterprises"
+    "Manufacturing", "Trading", "Hospitals & Healthcare", "Jewellery",
+    "Real Estate", "Steel", "Coal Trading", "Solar Energy",
+    "Service Companies", "Large Industrial Groups"
   ],
 
   "business_strategy": [
@@ -177,47 +332,6 @@
     "Long-term trust matters more than short-term revenue."
   ],
 
-  "failures_and_solutions": [
-    {
-      "failure": "Built features before fully understanding user workflows.",
-      "solution": "Now always understand the business and map workflows before building."
-    },
-    {
-      "failure": "Users resisted implementation.",
-      "solution": "Started consulting and training users as part of every implementation."
-    },
-    {
-      "failure": "Different clients wanted different systems.",
-      "solution": "Developed modular architecture — 70+ reusable modules."
-    },
-    {
-      "failure": "Manual follow-ups caused delays.",
-      "solution": "Built workflow automation and WhatsApp alerts."
-    },
-    {
-      "failure": "Processes kept changing after delivery.",
-      "solution": "Adopted continuous product updates and change request process."
-    },
-    {
-      "failure": "Scaling custom work was difficult.",
-      "solution": "Convert every custom feature into a reusable module."
-    }
-  ],
-
-  "future_vision": {
-    "roadmap": [
-      "Botivate → AutoRocket → AI Operating System → Business runs itself",
-      "AI Managers",
-      "AI Sales Team",
-      "AI Operations",
-      "AI Finance",
-      "AI HR",
-      "AI Directors",
-      "Every business decision backed by AI"
-    ],
-    "ultimate_goal": "Become the world's leading Business Automation and AI Company."
-  },
-
   "competitive_advantages": [
     "Built from real client site experience — not from copying competitors",
     "70+ reusable modules developed from actual implementations",
@@ -231,42 +345,40 @@
     "Long-term trust relationships with enterprise clients"
   ],
 
+  "known_gaps": [
+    "Zero public brand presence — no G2, Capterra, or app store listings",
+    "No published case studies or client success stories",
+    "No mobile app in public app stores (Flutter developer being hired)",
+    "MCA e-filing inactive — compliance risk",
+    "655 LinkedIn followers only — very low for B2B SaaS",
+    "115+ local competitors in Raipur alone",
+    "No public pricing — makes discovery hard for inbound leads",
+    "No press coverage or media mentions found"
+  ],
+
+  "future_vision": {
+    "roadmap": [
+      "Botivate → AutoRocket → AI Operating System → Business runs itself",
+      "AI Managers", "AI Sales Team", "AI Operations", "AI Finance",
+      "AI HR", "AI Directors", "Every business decision backed by AI"
+    ],
+    "ultimate_goal": "Become the world's leading Business Automation and AI Company."
+  },
+
   "team": {
-    "size": "40+",
+    "size": "26-40",
     "started_with": 2,
     "approach": "Domain experts who understand businesses, not just developers"
   },
 
   "key_metrics": {
-    "team_size": "40+",
+    "team_size": "26-40",
     "modules_built": "70+",
     "industries_served": "10+",
+    "linkedin_followers": 655,
+    "local_competitors": "115+",
+    "funding": "Bootstrapped / Unfunded",
     "implementation_approach": "Consulting + Software + Training",
-    "customer_focus": "Medium and Large Enterprises"
-  },
-
-  "documents_available": [
-    "Company Profile",
-    "Sales Deck",
-    "Master Service Agreement (MSA)",
-    "Non-Disclosure Agreement (NDA)",
-    "Statement of Work (SOW)",
-    "Business Requirement Document (BRD)",
-    "Functional Requirement Document (FRD)",
-    "Technical Design Document (TDD)",
-    "Standard Operating Procedures (SOPs)",
-    "User Manual",
-    "Training Material",
-    "Test Cases & QA Checklist",
-    "Deployment Checklist",
-    "Project Handover Document",
-    "Change Request (CR) Log",
-    "Product Roadmap",
-    "Product Backlog",
-    "Customer Feedback Log",
-    "Decision Log",
-    "Incident & Root Cause Report",
-    "Security & Access Policy",
-    "AI Agent Knowledge Base"
-  ]
+    "customer_focus": "SME and Medium Enterprises"
+  }
 }

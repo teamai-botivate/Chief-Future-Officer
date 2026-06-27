@@ -681,7 +681,7 @@ function toggleModeUI() {
 }
 
 async function openScheduleModal() {
-  document.getElementById('schedule-modal').style.display = 'flex';
+  document.getElementById('schedule-modal').classList.add('open');
   try {
     const sched = await apiFetch('/api/schedule');
     document.getElementById('sched-time').value = sched.run_time || '08:00';
@@ -716,7 +716,7 @@ async function openScheduleModal() {
 }
 
 function closeScheduleModal() {
-  document.getElementById('schedule-modal').style.display = 'none';
+  document.getElementById('schedule-modal').classList.remove('open');
 }
 
 function renderSchedQuestions(questions) {
@@ -785,10 +785,11 @@ async function saveSchedule() {
 
 // Global delegated click handler
 document.addEventListener('click', e => {
-  // Backdrop closes
-  if (e.target === document.getElementById('schedule-modal'))     closeScheduleModal();
-  if (e.target === document.getElementById('complete-modal'))     closeCompleteModal();
-  if (e.target === document.getElementById('task-detail-modal'))  closeTaskDetailModal();
+  // Backdrop closes — target must be the overlay itself, not its children
+  const t = e.target;
+  if (t.id === 'schedule-modal')    closeScheduleModal();
+  if (t.id === 'complete-modal')    closeCompleteModal();
+  if (t.id === 'task-detail-modal') closeTaskDetailModal();
 
   // Task detail trigger (title click)
   const trigger = e.target.closest('.task-detail-trigger');
@@ -1031,7 +1032,7 @@ function openTaskDetail(idx, source, sourceId) {
     addBtn.style.color = '';
   }
 
-  document.getElementById('task-detail-modal').style.display = 'flex';
+  document.getElementById('task-detail-modal').classList.add('open');
 }
 
 function buildWhatToDo(task) {
@@ -1094,7 +1095,7 @@ function buildWhatToDo(task) {
 }
 
 function closeTaskDetailModal() {
-  document.getElementById('task-detail-modal').style.display = 'none';
+  document.getElementById('task-detail-modal').classList.remove('open');
   _detailTaskIdx = null;
 }
 
@@ -1273,12 +1274,12 @@ let _completingTaskId = null;
 function openCompleteModal(taskId) {
   _completingTaskId = taskId;
   document.getElementById('complete-notes').value = '';
-  document.getElementById('complete-modal').style.display = 'flex';
+  document.getElementById('complete-modal').classList.add('open');
   setTimeout(() => document.getElementById('complete-notes').focus(), 100);
 }
 
 function closeCompleteModal() {
-  document.getElementById('complete-modal').style.display = 'none';
+  document.getElementById('complete-modal').classList.remove('open');
   _completingTaskId = null;
 }
 

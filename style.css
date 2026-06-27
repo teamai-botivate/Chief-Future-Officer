@@ -1062,16 +1062,22 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .empty-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
 .empty-desc  { font-size: 12px; line-height: 1.6; }
 
-/* ── Schedule Modal ─────────────────────────────────────────── */
-#schedule-modal {
+/* ── Modals — shared overlay + box ─────────────────────────── */
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.75);
   z-index: 1000;
+  display: none;
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(4px);
   padding: 16px;
+  overflow-y: auto;
+}
+
+.modal-overlay.open {
+  display: flex;
 }
 
 .modal-box {
@@ -1082,14 +1088,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   width: 100%;
   max-width: 520px;
   box-shadow: var(--shadow-lg);
-  max-height: 90vh;
+  max-height: 88vh;
   overflow-y: auto;
+  margin: auto;              /* ensures vertical centering when content is short */
+  position: relative;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 22px;
 }
 
@@ -1097,6 +1106,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
+  line-height: 1.4;
 }
 
 .modal-close {
@@ -1108,6 +1118,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   padding: 4px 6px;
   border-radius: var(--radius-xs);
   line-height: 1;
+  flex-shrink: 0;
   transition: color var(--transition), background var(--transition);
 }
 
@@ -1238,7 +1249,26 @@ input[type="radio"] {
   .topbar-title { font-size: 14px; }
   .topbar-badge { display: none; }
 
-  .modal-box { padding: 20px 16px; border-radius: var(--radius); }
+  /* Modal — full screen on mobile */
+  #schedule-modal,
+  #complete-modal,
+  #task-detail-modal { padding: 0; align-items: flex-end; }
+
+  .modal-box {
+    padding: 20px 16px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    max-width: 100%;
+    max-height: 92vh;
+    margin: 0;
+  }
+
+  /* Task cards — stack actions below on small screens */
+  .task-card { flex-wrap: wrap; gap: 10px; }
+  .task-extract-item { flex-wrap: wrap; }
+  .btn-add-task { width: 100%; text-align: center; }
+
+  /* Task tabs */
+  .task-tab { font-size: 12px; padding: 7px 12px; }
 }
 
 /* ============================================================
@@ -1248,6 +1278,9 @@ input[type="radio"] {
   .dash-grid { grid-template-columns: 1fr; }
   .stat-card { padding: 14px 16px; }
   .stat-value { font-size: 22px; }
+
+  .task-card { padding: 12px; }
+  .task-title { font-size: 12.5px; }
 }
 
 /* ============================================================

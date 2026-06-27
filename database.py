@@ -44,8 +44,11 @@ class DailyBrief(Base):
 class BriefSchedule(Base):
     __tablename__ = "brief_schedule"
     id = Column(Integer, primary_key=True, index=True)
-    run_time = Column(String(5), default="08:00")   # HH:MM
-    questions = Column(Text)                         # JSON list of questions
+    run_time = Column(String(5), default="08:00")    # HH:MM (IST)
+    run_days = Column(String(20), default="daily")   # "daily" or "1,2,3,4,5" (Mon-Fri)
+    mode = Column(String(20), default="full")        # "full" = 14-point CFO analysis, "custom" = user questions
+    custom_questions = Column(Text)                  # JSON list — used only when mode=custom
+    last_run = Column(String(19))                    # ISO datetime of last successful run
     updated_at = Column(DateTime, default=datetime.utcnow)
 
 

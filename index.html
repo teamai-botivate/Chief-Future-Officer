@@ -342,25 +342,65 @@
 <div id="schedule-modal" style="display:none;">
   <div class="modal-box">
     <div class="modal-header">
-      <div class="modal-title">⏰ Daily Brief Schedule</div>
+      <div class="modal-title">⏰ CFO Report Schedule</div>
       <button class="modal-close" onclick="closeScheduleModal()">✕</button>
     </div>
 
+    <!-- Run Time -->
     <div class="input-group">
-      <label class="input-label">Run Time (24-hour format)</label>
+      <label class="input-label">Run Time (IST — 24hr)</label>
       <input type="time" id="sched-time" />
-      <div style="font-size:11px;color:var(--text-muted);">Brief regenerates once per day when you open the dashboard after this time.</div>
+      <div style="font-size:11px;color:var(--text-muted);">Dashboard auto-generates the report when you open it after this time each day.</div>
+    </div>
+
+    <!-- Run Days -->
+    <div class="input-group">
+      <label class="input-label">Run Days</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;" id="sched-days-picker">
+        <button class="day-btn active" data-day="daily" onclick="selectDay(this)">Every Day</button>
+        <button class="day-btn" data-day="1" onclick="selectDay(this)">Mon</button>
+        <button class="day-btn" data-day="2" onclick="selectDay(this)">Tue</button>
+        <button class="day-btn" data-day="3" onclick="selectDay(this)">Wed</button>
+        <button class="day-btn" data-day="4" onclick="selectDay(this)">Thu</button>
+        <button class="day-btn" data-day="5" onclick="selectDay(this)">Fri</button>
+        <button class="day-btn" data-day="6" onclick="selectDay(this)">Sat</button>
+        <button class="day-btn" data-day="7" onclick="selectDay(this)">Sun</button>
+      </div>
     </div>
 
     <hr class="divider">
 
-    <div class="input-group" style="margin-bottom:20px;">
-      <label class="input-label">Research Questions (max 5)</label>
-      <div id="sched-questions" style="display:flex;flex-direction:column;gap:8px;"></div>
-      <button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:7px 14px;width:fit-content;" onclick="addSchedQuestion()">+ Add Question</button>
+    <!-- Mode -->
+    <div class="input-group">
+      <label class="input-label">Report Mode</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-elevated);flex:1;">
+          <input type="radio" name="sched-mode" value="full" id="mode-full" style="width:auto;" onchange="toggleModeUI()" checked />
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Full CFO Analysis</div>
+            <div style="font-size:11px;color:var(--text-muted);">14-point deep strategic report — next products, competitors, gaps, 90-day plan</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-elevated);flex:1;">
+          <input type="radio" name="sched-mode" value="custom" id="mode-custom" style="width:auto;" onchange="toggleModeUI()" />
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Custom Questions</div>
+            <div style="font-size:11px;color:var(--text-muted);">Define your own research questions</div>
+          </div>
+        </label>
+      </div>
     </div>
 
-    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+    <!-- Custom questions — shown only in custom mode -->
+    <div id="sched-custom-section" style="display:none;">
+      <div class="input-group" style="margin-bottom:20px;">
+        <label class="input-label">Research Questions (max 10)</label>
+        <div id="sched-questions" style="display:flex;flex-direction:column;gap:8px;"></div>
+        <button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:7px 14px;width:fit-content;" onclick="addSchedQuestion()">+ Add Question</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px;">
       <button class="btn btn-ghost" onclick="closeScheduleModal()">Cancel</button>
       <button class="btn btn-primary" onclick="saveSchedule()">💾 Save Schedule</button>
     </div>

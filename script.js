@@ -534,26 +534,37 @@ function escHtml(str) {
 // ── Daily Brief ───────────────────────────────────────────────────────────────
 
 async function loadDailyBrief() {
-  const body = document.getElementById('daily-brief-body');
+  const body   = document.getElementById('daily-brief-body');
   const dateEl = document.getElementById('brief-date');
-  body.innerHTML = '<div class="loader visible"><div class="spinner"></div><span>Generating today\'s brief…</span></div>';
+  body.innerHTML = '<div class="loader visible"><div class="spinner"></div><span>Checking CFO report schedule…</span></div>';
 
   try {
     const data = await apiFetch('/api/daily-brief');
-    const d = new Date(data.date);
-    dateEl.textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
-      + (data.cached ? ' · Cached' : ' · Just generated');
 
-    // Split multi-question brief by separator
-    const sections = data.analysis.split('\n\n---\n\n').filter(Boolean);
-    let html = '';
-    for (const sec of sections) {
-      html += `<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);">
-        <div class="analysis-text">${renderAnalysis(sec)}</div>
-      </div>`;
+    // Not yet time to run
+    if (!data.analysis) {
+      const d = new Date(data.date);
+      dateEl.textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+      body.innerHTML = `
+        <div style="text-align:center;padding:32px 20px;">
+          <div style="font-size:36px;margin-bottom:12px;">⏰</div>
+          <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">
+            CFO Report Scheduled for ${data.next_run} IST
+          </div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7;">
+            ${data.message}
+          </div>
+          <button class="btn btn-primary" onclick="regenerateBrief()">▶ Generate Now</button>
+        </div>`;
+      return;
     }
-    html += renderSources(data.sources);
-    body.innerHTML = html || '<p style="color:var(--text-muted)">No brief available.</p>';
+
+    const d = new Date(data.date);
+    const modeLabel = data.mode === 'full' ? '14-Point CFO Analysis' : 'Custom Research';
+    dateEl.textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
+      + ` · ${modeLabel}` + (data.cached ? ' · Cached' : ' · Just generated');
+
+    body.innerHTML = `<div class="analysis-text">${renderAnalysis(data.analysis)}</div>${renderSources(data.sources)}`;
   } catch (e) {
     body.innerHTML = `<p style="color:var(--accent3)">Could not load brief: ${e.message}</p>`;
     dateEl.textContent = 'Error';
@@ -569,17 +580,9 @@ async function regenerateBrief() {
   try {
     const data = await apiFetch('/api/daily-brief/regenerate', { method: 'POST' });
     const d = new Date(data.date);
-    dateEl.textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) + ' · Just regenerated';
-
-    const sections = data.analysis.split('\n\n---\n\n').filter(Boolean);
-    let html = '';
-    for (const sec of sections) {
-      html += `<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);">
-        <div class="analysis-text">${renderAnalysis(sec)}</div>
-      </div>`;
-    }
-    html += renderSources(data.sources);
-    body.innerHTML = html || '<p style="color:var(--text-muted)">No brief available.</p>';
+    const modeLabel = data.mode === 'full' ? '14-Point CFO Analysis' : 'Custom Research';
+    dateEl.textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) + ` · ${modeLabel} · Just regenerated`;
+    body.innerHTML = `<div class="analysis-text">${renderAnalysis(data.analysis)}</div>${renderSources(data.sources)}`;
   } catch (e) {
     body.innerHTML = `<p style="color:var(--accent3)">Error: ${e.message}</p>`;
   }
@@ -587,12 +590,63 @@ async function regenerateBrief() {
 
 // ── Schedule Modal ────────────────────────────────────────────────────────────
 
+let _selectedDays = 'daily';
+
+function selectDay(btn) {
+  const day = btn.dataset.day;
+  if (day === 'daily') {
+    // Deselect all individual days, select "Every Day"
+    _selectedDays = 'daily';
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    // Deselect "Every Day" and toggle individual days
+    document.querySelector('.day-btn[data-day="daily"]').classList.remove('active');
+    btn.classList.toggle('active');
+    const activeDays = [...document.querySelectorAll('.day-btn.active')]
+      .map(b => b.dataset.day).filter(d => d !== 'daily');
+    _selectedDays = activeDays.length ? activeDays.join(',') : 'daily';
+    if (!activeDays.length) {
+      document.querySelector('.day-btn[data-day="daily"]').classList.add('active');
+    }
+  }
+}
+
+function toggleModeUI() {
+  const isCustom = document.getElementById('mode-custom').checked;
+  document.getElementById('sched-custom-section').style.display = isCustom ? 'block' : 'none';
+}
+
 async function openScheduleModal() {
   document.getElementById('schedule-modal').style.display = 'flex';
   try {
     const sched = await apiFetch('/api/schedule');
     document.getElementById('sched-time').value = sched.run_time || '08:00';
-    renderSchedQuestions(sched.questions || []);
+
+    // Set run days
+    _selectedDays = sched.run_days || 'daily';
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    if (_selectedDays === 'daily') {
+      document.querySelector('.day-btn[data-day="daily"]').classList.add('active');
+    } else {
+      _selectedDays.split(',').forEach(d => {
+        const btn = document.querySelector(`.day-btn[data-day="${d}"]`);
+        if (btn) btn.classList.add('active');
+      });
+    }
+
+    // Set mode
+    const mode = sched.mode || 'full';
+    document.getElementById(mode === 'full' ? 'mode-full' : 'mode-custom').checked = true;
+    toggleModeUI();
+
+    renderSchedQuestions(sched.custom_questions || []);
+
+    // Show last run info
+    if (sched.last_run) {
+      const lr = new Date(sched.last_run);
+      document.getElementById('sched-time').title = `Last run: ${lr.toLocaleString()}`;
+    }
   } catch (e) {
     renderSchedQuestions([]);
   }
@@ -607,29 +661,28 @@ function renderSchedQuestions(questions) {
   container.innerHTML = '';
   const qs = questions.length ? questions : [''];
   qs.forEach((q, i) => {
-    container.innerHTML += `
-      <div style="display:flex;gap:8px;align-items:center;" id="sq-row-${i}">
-        <input type="text" value="${escHtml(q)}" placeholder="Enter a research question…"
-          style="flex:1;" id="sq-${i}" />
-        <button onclick="removeSchedQuestion(${i})"
-          style="background:none;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;flex-shrink:0;">✕</button>
-      </div>`;
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:8px;align-items:center;';
+    row.id = `sq-row-${i}`;
+    row.innerHTML = `
+      <input type="text" value="${escHtml(q)}" placeholder="Enter a research question…" style="flex:1;" id="sq-${i}" />
+      <button onclick="removeSchedQuestion(${i})"
+        style="background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;flex-shrink:0;line-height:1;">✕</button>`;
+    container.appendChild(row);
   });
 }
 
 function addSchedQuestion() {
   const container = document.getElementById('sched-questions');
-  const count = container.children.length;
-  if (count >= 5) { alert('Maximum 5 questions allowed.'); return; }
-  const i = count;
+  if (container.children.length >= 10) { alert('Maximum 10 questions allowed.'); return; }
+  const i = container.children.length;
   const row = document.createElement('div');
   row.style.cssText = 'display:flex;gap:8px;align-items:center;';
   row.id = `sq-row-${i}`;
   row.innerHTML = `
-    <input type="text" value="" placeholder="Enter a research question…"
-      style="flex:1;" id="sq-${i}" />
+    <input type="text" value="" placeholder="Enter a research question…" style="flex:1;" id="sq-${i}" />
     <button onclick="removeSchedQuestion(${i})"
-      style="background:none;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;flex-shrink:0;">✕</button>`;
+      style="background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;flex-shrink:0;line-height:1;">✕</button>`;
   container.appendChild(row);
 }
 
@@ -642,22 +695,26 @@ async function saveSchedule() {
   const runTime = document.getElementById('sched-time').value;
   if (!runTime) { alert('Please set a run time.'); return; }
 
-  const questions = [];
+  const mode = document.querySelector('input[name="sched-mode"]:checked')?.value || 'full';
+  const custom_questions = [];
   document.querySelectorAll('[id^="sq-"]').forEach(inp => {
-    if (inp.tagName === 'INPUT' && inp.value.trim()) {
-      questions.push(inp.value.trim());
-    }
+    if (inp.tagName === 'INPUT' && inp.value.trim()) custom_questions.push(inp.value.trim());
   });
-  if (!questions.length) { alert('Add at least one research question.'); return; }
+  if (mode === 'custom' && !custom_questions.length) {
+    alert('Add at least one question for custom mode.'); return;
+  }
 
   try {
-    await apiFetch('/api/schedule', {
+    const saved = await apiFetch('/api/schedule', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ run_time: runTime, questions }),
+      body: JSON.stringify({ run_time: runTime, run_days: _selectedDays, mode, custom_questions }),
     });
     closeScheduleModal();
-    alert(`Schedule saved. Daily brief will run at ${runTime} each day.`);
+
+    const dayLabel = saved.run_days === 'daily' ? 'every day' : `on days: ${saved.run_days}`;
+    const modeLabel = saved.mode === 'full' ? 'Full CFO Analysis (14-point)' : 'Custom Questions';
+    alert(`✓ Schedule saved!\n\nTime: ${runTime} IST\nDays: ${dayLabel}\nMode: ${modeLabel}\n\nThe CFO report will auto-generate when you open the dashboard after ${runTime}.`);
   } catch (e) {
     alert('Error saving schedule: ' + e.message);
   }

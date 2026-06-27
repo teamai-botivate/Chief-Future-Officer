@@ -1113,6 +1113,36 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .modal-close:hover { color: var(--text-primary); background: var(--bg-elevated); }
 
+/* ── Day picker buttons ─────────────────────────────────────── */
+.day-btn {
+  padding: 6px 13px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.day-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+.day-btn.active {
+  background: var(--blue-dim);
+  border-color: var(--blue-border);
+  color: var(--blue);
+}
+
+/* Radio inputs in modal */
+input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--blue);
+  flex-shrink: 0;
+}
+
 /* ── Divider ────────────────────────────────────────────────── */
 .divider {
   border: none;

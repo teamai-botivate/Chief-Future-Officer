@@ -5,6 +5,7 @@ Chief Future Officer (CFO) — FastAPI Backend
 import json
 import os
 import asyncio
+import re as _re
 from datetime import datetime, date
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -14,7 +15,7 @@ from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 
 from database import init_db, get_db, ResearchLog, Recommendation, DailyBrief, BriefSchedule
-from ai_engine import run_research, run_recommendation
+from ai_engine import run_research, run_recommendation, run_strategic_cfo_analysis
 
 load_dotenv()
 
@@ -48,8 +49,10 @@ class RecommendRequest(BaseModel):
 
 
 class ScheduleUpdate(BaseModel):
-    run_time: str        # HH:MM
-    questions: list[str]
+    run_time: str                   # HH:MM
+    run_days: str = "daily"         # "daily" or "1,2,3,4,5"
+    mode: str = "full"              # "full" or "custom"
+    custom_questions: list[str] = []
 
 
 # ── Health ─────────────────────────────────────────────────────────────────────
@@ -172,19 +175,14 @@ async def recommend(req: RecommendRequest, db: Session = Depends(get_db)):
 
 # ── Daily Brief ───────────────────────────────────────────────────────────────
 
-DEFAULT_QUESTIONS = [
-    "What are the top business automation and AI trends this week?",
-    "What opportunities should Botivate pursue in the next 30 days?",
-    "What competitive threats should Botivate watch right now?",
-]
-
-
 def _get_schedule(db: Session) -> BriefSchedule:
     sched = db.query(BriefSchedule).first()
     if not sched:
         sched = BriefSchedule(
             run_time="08:00",
-            questions=json.dumps(DEFAULT_QUESTIONS),
+            run_days="daily",
+            mode="full",
+            custom_questions=json.dumps([]),
         )
         db.add(sched)
         db.commit()
@@ -192,43 +190,92 @@ def _get_schedule(db: Session) -> BriefSchedule:
     return sched
 
 
+def _should_run_today(sched: BriefSchedule) -> bool:
+    """Check if today is a scheduled run day."""
+    if sched.run_days == "daily":
+        return True
+    try:
+        days = [int(d) for d in sched.run_days.split(",")]
+        return datetime.now().weekday() + 1 in days  # Mon=1 … Sun=7
+    except Exception:
+        return True
+
+
+def _already_ran_today(sched: BriefSchedule) -> bool:
+    """Return True if the brief already ran today at or after the scheduled time."""
+    if not sched.last_run:
+        return False
+    try:
+        last = datetime.fromisoformat(sched.last_run)
+        return last.date() == date.today()
+    except Exception:
+        return False
+
+
+async def _generate_brief(sched: BriefSchedule) -> tuple[str, list]:
+    """Run the appropriate brief mode and return (analysis_text, sources)."""
+    if sched.mode == "full":
+        # Full 14-point CFO strategic analysis
+        result = await run_strategic_cfo_analysis()
+        return result.get("analysis", ""), result.get("sources", [])
+    else:
+        # Custom questions mode
+        questions = json.loads(sched.custom_questions or "[]")
+        results, all_sources = [], []
+        for q in questions:
+            try:
+                r = await run_research(q)
+                results.append(f"### {q}\n\n{r.get('analysis', '')}")
+                all_sources.extend(r.get("sources", []))
+            except Exception:
+                pass
+        return "\n\n---\n\n".join(results), all_sources[:10]
+
+
 @app.get("/api/daily-brief")
 async def get_daily_brief(db: Session = Depends(get_db)):
     today = date.today().isoformat()
-    brief = db.query(DailyBrief).filter(DailyBrief.date == today).first()
+    sched = _get_schedule(db)
 
+    # Return cached brief for today if already ran
+    brief = db.query(DailyBrief).filter(DailyBrief.date == today).first()
     if brief:
         return {
             "date": brief.date,
             "analysis": brief.analysis,
             "sources": json.loads(brief.sources or "[]"),
             "generated_at": brief.generated_at.isoformat(),
+            "mode": sched.mode,
             "cached": True,
         }
 
-    # Generate fresh brief
-    sched = _get_schedule(db)
-    questions = json.loads(sched.questions or "[]") or DEFAULT_QUESTIONS
+    # Auto-generate if: today is a run day AND current time >= scheduled time
+    now_time = datetime.now().strftime("%H:%M")
+    should_auto = _should_run_today(sched) and now_time >= sched.run_time
 
-    results = []
-    all_sources = []
-    for q in questions:
-        try:
-            r = await run_research(q)
-            results.append(f"QUESTION: {q}\n\n{r.get('analysis', '')}")
-            all_sources.extend(r.get("sources", []))
-        except Exception:
-            pass
+    if not should_auto:
+        return {
+            "date": today,
+            "analysis": None,
+            "sources": [],
+            "generated_at": None,
+            "mode": sched.mode,
+            "cached": False,
+            "next_run": sched.run_time,
+            "message": f"Scheduled for {sched.run_time} IST. Open the dashboard after that time to auto-generate.",
+        }
 
-    combined = "\n\n---\n\n".join(results)
+    analysis, sources = await _generate_brief(sched)
 
     brief = DailyBrief(
         date=today,
-        analysis=combined,
-        sources=json.dumps(all_sources[:10]),
+        analysis=analysis,
+        sources=json.dumps(sources),
         generated_at=datetime.utcnow(),
     )
     db.add(brief)
+    # Update last_run on schedule
+    sched.last_run = datetime.now().isoformat(timespec="seconds")
     db.commit()
     db.refresh(brief)
 
@@ -237,6 +284,7 @@ async def get_daily_brief(db: Session = Depends(get_db)):
         "analysis": brief.analysis,
         "sources": json.loads(brief.sources or "[]"),
         "generated_at": brief.generated_at.isoformat(),
+        "mode": sched.mode,
         "cached": False,
     }
 
@@ -248,7 +296,26 @@ async def regenerate_daily_brief(db: Session = Depends(get_db)):
     if existing:
         db.delete(existing)
         db.commit()
-    return await get_daily_brief(db)
+    sched = _get_schedule(db)
+    analysis, sources = await _generate_brief(sched)
+    brief = DailyBrief(
+        date=today,
+        analysis=analysis,
+        sources=json.dumps(sources),
+        generated_at=datetime.utcnow(),
+    )
+    db.add(brief)
+    sched.last_run = datetime.now().isoformat(timespec="seconds")
+    db.commit()
+    db.refresh(brief)
+    return {
+        "date": brief.date,
+        "analysis": brief.analysis,
+        "sources": json.loads(brief.sources or "[]"),
+        "generated_at": brief.generated_at.isoformat(),
+        "mode": sched.mode,
+        "cached": False,
+    }
 
 
 @app.get("/api/schedule")
@@ -256,28 +323,36 @@ def get_schedule(db: Session = Depends(get_db)):
     sched = _get_schedule(db)
     return {
         "run_time": sched.run_time,
-        "questions": json.loads(sched.questions or "[]"),
+        "run_days": sched.run_days,
+        "mode": sched.mode,
+        "custom_questions": json.loads(sched.custom_questions or "[]"),
+        "last_run": sched.last_run,
         "updated_at": sched.updated_at.isoformat() if sched.updated_at else "",
     }
 
 
 @app.post("/api/schedule")
 def update_schedule(req: ScheduleUpdate, db: Session = Depends(get_db)):
-    import re
-    if not re.match(r"^\d{2}:\d{2}$", req.run_time):
+    if not _re.match(r"^\d{2}:\d{2}$", req.run_time):
         raise HTTPException(status_code=400, detail="run_time must be HH:MM format")
-    if not req.questions:
-        raise HTTPException(status_code=400, detail="At least one question required")
+    if req.mode not in ("full", "custom"):
+        raise HTTPException(status_code=400, detail="mode must be 'full' or 'custom'")
+    if req.mode == "custom" and not req.custom_questions:
+        raise HTTPException(status_code=400, detail="At least one question required for custom mode")
 
     sched = _get_schedule(db)
     sched.run_time = req.run_time
-    sched.questions = json.dumps(req.questions[:5])  # max 5 questions
+    sched.run_days = req.run_days
+    sched.mode = req.mode
+    sched.custom_questions = json.dumps(req.custom_questions[:10])
     sched.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(sched)
     return {
         "run_time": sched.run_time,
-        "questions": json.loads(sched.questions),
+        "run_days": sched.run_days,
+        "mode": sched.mode,
+        "custom_questions": json.loads(sched.custom_questions),
         "updated_at": sched.updated_at.isoformat(),
     }
 

@@ -783,11 +783,32 @@ async function saveSchedule() {
   }
 }
 
-// Close modals on backdrop click
+// Global delegated click handler
 document.addEventListener('click', e => {
+  // Backdrop closes
   if (e.target === document.getElementById('schedule-modal'))     closeScheduleModal();
   if (e.target === document.getElementById('complete-modal'))     closeCompleteModal();
   if (e.target === document.getElementById('task-detail-modal'))  closeTaskDetailModal();
+
+  // Task detail trigger (title click)
+  const trigger = e.target.closest('.task-detail-trigger');
+  if (trigger) {
+    const idx      = parseInt(trigger.dataset.idx);
+    const source   = trigger.dataset.source;
+    const sourceId = trigger.dataset.sourceid ? parseInt(trigger.dataset.sourceid) : null;
+    openTaskDetail(idx, source, sourceId);
+    return;
+  }
+
+  // Add task button
+  const addBtn = e.target.closest('.btn-add-task');
+  if (addBtn && !addBtn.disabled) {
+    const idx      = parseInt(addBtn.dataset.idx);
+    const source   = addBtn.dataset.source;
+    const sourceId = addBtn.dataset.sourceid ? parseInt(addBtn.dataset.sourceid) : null;
+    addTaskFromExtractByData(idx, source, sourceId, addBtn);
+    return;
+  }
 });
 
 // ── Task Extraction ───────────────────────────────────────────────────────────
@@ -925,7 +946,8 @@ function renderTaskExtract(tasks, source, sourceId) {
 
     return `<div class="task-extract-item" id="tex-${source}-${sourceId}-${i}">
       <div style="flex-shrink:0;width:6px;height:6px;border-radius:50%;background:${pc};margin-top:7px;"></div>
-      <div style="flex:1;min-width:0;cursor:pointer;" onclick="openTaskDetail(${i}, '${source}', ${sourceId || 'null'})">
+      <div class="task-detail-trigger" style="flex:1;min-width:0;cursor:pointer;"
+        data-idx="${i}" data-source="${source}" data-sourceid="${sourceId || ''}">
         <div style="font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.5;
           text-decoration:underline;text-decoration-color:var(--border-light);text-underline-offset:3px;">
           ${escHtml(task.title)}
@@ -938,7 +960,7 @@ function renderTaskExtract(tasks, source, sourceId) {
         </div>
       </div>
       <button class="btn-add-task" id="btn-tex-${source}-${i}"
-        onclick="addTaskFromExtract(${i}, '${source}', ${sourceId || 'null'}, this)"
+        data-idx="${i}" data-source="${source}" data-sourceid="${sourceId || ''}"
         title="Add to Tasks">+ Add</button>
     </div>`;
   }).join('');
@@ -1107,22 +1129,24 @@ async function addFromDetailModal() {
   }
 }
 
-async function addTaskFromExtract(idx, source, sourceId, btn) {
-  const row = btn.closest('.task-extract-item');
-  const titleEl = row.querySelector('div[style*="font-size:13px"]');
-  const priorityEl = row.querySelector('.priority-dot');
-  const title = titleEl.textContent.trim();
-  const priority = priorityEl.textContent.trim();
-
+async function addTaskFromExtractByData(idx, source, sourceId, btn) {
+  const task = _taskDetailList[idx];
+  if (!task) return;
   btn.disabled = true;
   btn.textContent = '…';
   try {
     await apiFetch('/api/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, source, source_id: sourceId, priority }),
+      body: JSON.stringify({
+        title: task.title,
+        description: task.description || '',
+        source,
+        source_id: sourceId,
+        priority: task.priority,
+      }),
     });
-    btn.textContent = '✓ Added';
+    btn.textContent = '✓';
     btn.style.background = 'var(--teal)';
     btn.style.color = '#000';
     btn.disabled = true;
@@ -1131,6 +1155,10 @@ async function addTaskFromExtract(idx, source, sourceId, btn) {
     btn.disabled = false;
     alert('Error: ' + e.message);
   }
+}
+
+async function addTaskFromExtract(idx, source, sourceId, btn) {
+  await addTaskFromExtractByData(idx, source, sourceId, btn);
 }
 
 async function addAllTasks(source, sourceId, tasks) {

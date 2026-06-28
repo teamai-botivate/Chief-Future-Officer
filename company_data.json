@@ -13,7 +13,7 @@
     "team_email": "team.ai@botivate.in",
     "phone": "+91 99930 23243",
     "industry": "Business Automation & AI",
-    "stage": "Early Growth — bootstrapped, unfunded, actively hiring",
+    "stage": "Early Growth — bootstrapped, profitable focus, actively hiring",
     "flagship_product": "AutoRocket — AI Business Operating System",
     "social": {
       "linkedin": "https://in.linkedin.com/company/botivate",
@@ -25,18 +25,18 @@
 
   "founders": [
     {
-      "name": "Kavit Passary",
-      "role": "Designated Partner / Co-Founder",
-      "din": "01475884",
-      "background": "Serial entrepreneur across mining, real estate, textiles, and technology sectors. Director in multiple companies including Aviorone Technologies, CTM Fashions, Kanchan Mining, Pasmin Realty, Passary Minerals, Refratech Application Services, Y3K Ventures.",
-      "expertise": "Business strategy, multi-sector operations, investor connections"
+      "name": "Kumar Tandan",
+      "role": "Co-Founder — Business, Sales & Product Strategy",
+      "din": "10203291",
+      "background": "Tech founder driving business development, product vision, and sales strategy at Botivate. Core driver of AutoRocket's product direction.",
+      "expertise": "Business strategy, product development, sales, automation consulting"
     },
     {
-      "name": "Satyendra Tandan",
-      "role": "Designated Partner / Founder",
-      "din": "10203291",
-      "background": "Tech founder with IT and consulting background. Core technical and product vision leader at Botivate.",
-      "expertise": "Technology, product development, business automation"
+      "name": "Kavit Passary",
+      "role": "Co-Founder — Finance & Strategy",
+      "din": "01475884",
+      "background": "Serial entrepreneur with diverse business experience across mining, real estate, textiles, and technology. Brings financial strategy and investor network.",
+      "expertise": "Finance, business strategy, investor relations, multi-sector operations"
     }
   ],
 
@@ -48,195 +48,275 @@
 
   "founding_story": "Botivate started with just 2 people and a vision to solve real business problems. Instead of building software from an office, the founders worked directly at client locations — sitting with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch teams, and operators to understand root problems from the ground up. Every solved client problem was converted into a reusable automation module. This is how the company grew from 2 to 40+ professionals and 70+ modules.",
 
+  "client_case_studies": [
+    {
+      "client_name": "Steel Rolling Mill",
+      "industry": "Steel Manufacturing",
+      "problem": [
+        "Manual production planning",
+        "Purchase and inventory tracking in Excel",
+        "No live MIS or management dashboard",
+        "Delayed management decisions due to lack of real-time data",
+        "Poor coordination between departments"
+      ],
+      "what_botivate_automated": [
+        "Purchase Management",
+        "Production Planning",
+        "Inventory Management",
+        "Dispatch",
+        "Quality Control",
+        "MIS Dashboard",
+        "Task Delegation",
+        "Approval Workflow"
+      ],
+      "results": [
+        "Centralized operations across departments",
+        "Reduced manual reporting time significantly",
+        "Improved production visibility for management",
+        "Faster decision-making with real-time MIS",
+        "Standardized workflows across all teams"
+      ]
+    },
+    {
+      "client_name": "Jai Bhole Group",
+      "industry": "Coal Trading",
+      "problem": [
+        "Entire procurement process managed manually",
+        "Government auction tracking done on paper",
+        "Payment advice management scattered across teams",
+        "Transport coordination was unstructured",
+        "Multiple documents lost or mismanaged across teams"
+      ],
+      "what_botivate_automated": [
+        "Bid Management",
+        "EMD Tracking",
+        "Payment Advice",
+        "Sales Letter Management",
+        "Lift Orders",
+        "Transport Management",
+        "Weighbridge Tracking",
+        "Dispatch Monitoring",
+        "Financial Tracking",
+        "Document Repository"
+      ],
+      "results": [
+        "Complete procurement visibility end-to-end",
+        "Fully digital workflow from bid to dispatch",
+        "Better compliance and audit trail",
+        "Reduced document loss to near zero",
+        "Faster operations and shorter procurement cycles"
+      ]
+    },
+    {
+      "client_name": "Rice Manufacturing (Paddy Procurement)",
+      "industry": "Rice / Agro Processing",
+      "problem": [
+        "Separate manual tracking for government and market procurement",
+        "Manual reconciliation causing errors",
+        "Purchase confusion due to two different procurement channels",
+        "No real-time stock visibility"
+      ],
+      "what_botivate_automated": [
+        "Unified Procurement System",
+        "Government Procurement Module",
+        "Market Procurement Module",
+        "Lift Tracking",
+        "Weighment",
+        "Receipt Management",
+        "Transport Tracking",
+        "Accounts Integration"
+      ],
+      "results": [
+        "Single unified procurement platform for both channels",
+        "Better inventory visibility across warehouses",
+        "Simplified reporting for management",
+        "Significantly reduced manual work and errors"
+      ]
+    }
+  ],
+
+  "sales_intelligence": {
+    "typical_deal_size": "₹4,00,000+ per annual automation project (enterprise projects vary by scope)",
+    "monthly_amc_after_implementation": true,
+    "average_sales_cycle_days": "30–90 days",
+    "top_3_objections": [
+      "Budget constraints — prospect feels cost is high upfront",
+      "Fear of changing existing processes — resistance to change",
+      "We already use ERP — existing ERP investment creates inertia"
+    ],
+    "why_deals_stall_or_lost": [
+      "Decision delays and internal approval chains",
+      "Lack of urgency at decision-maker level",
+      "Existing ERP investment makes switching feel risky",
+      "Long procurement cycles in larger companies"
+    ],
+    "best_lead_sources": [
+      "Referrals (strongest)",
+      "Founder network",
+      "Existing customer references"
+    ],
+    "active_prospects_in_pipeline": "Update with actual number"
+  },
+
+  "team_structure": {
+    "total_size": "40+",
+    "founders": 2,
+    "founder_roles": [
+      "Kumar Tandan — Business, Sales, Product Strategy",
+      "Kavit Passary — Finance & Strategy"
+    ],
+    "sales_team": "Update with actual headcount",
+    "delivery_implementation_team": "Update with actual headcount",
+    "developers_engineers": "Frontend, Backend, Google Apps Script, AI, Cloud, QA",
+    "customer_success": "Implementation & Support Team",
+    "key_hires_planned": [
+      "AI Engineers",
+      "Enterprise Sales",
+      "Product Managers",
+      "Customer Success Managers",
+      "Cloud Engineers",
+      "Flutter Mobile Developer (urgent)"
+    ]
+  },
+
+  "revenue_model": {
+    "primary_type": "Hybrid",
+    "revenue_streams": [
+      "Implementation fees (one-time per project)",
+      "Annual Automation Projects (₹4L+ per project)",
+      "AMC — Annual Maintenance Contracts (recurring)",
+      "AI Automation modules (recurring)",
+      "Consulting and business process standardization"
+    ],
+    "current_mrr": "Update with actual figure",
+    "revenue_growth": "Update with YoY or MoM figure",
+    "active_paying_clients": "Update with actual number",
+    "avg_revenue_per_client_per_year": "₹4L+ (varies by project scope)"
+  },
+
   "financial_status": {
-    "funding_stage": "Unfunded / Bootstrapped",
+    "funding_stage": "Bootstrapped — profitable growth focus before institutional funding",
     "authorized_capital": "INR 10,00,000 (10 Lakh)",
     "paid_up_capital": "INR 1,00,000 (1 Lakh)",
-    "annual_revenue": "Not publicly disclosed — update with actual figure",
-    "monthly_revenue": "Not publicly disclosed — update with actual figure",
-    "monthly_expenses": "Update with actual figure",
-    "monthly_profit_loss": "Update with actual figure",
-    "cash_in_bank": "Update with actual figure",
-    "receivables_outstanding": "Update with actual figure",
+    "amount_raised": "None",
+    "runway": "Self-funded — no external runway dependency",
+    "fundraising_plans": "Not actively raising. Focus on profitable growth first.",
+    "future_use_of_funds": [
+      "Product development and AI research",
+      "Enterprise sales team",
+      "International expansion (UAE, Singapore)",
+      "Cloud infrastructure",
+      "Strategic hiring"
+    ],
     "mca_status": "Active LLP",
-    "efiling_status": "Inactive for e-filing as of June 2026 — needs attention",
-    "notes": "Company is bootstrapped. No VC or angel funding received. Revenue comes from client implementations and consulting."
+    "efiling_status": "Inactive for e-filing as of June 2026 — URGENT: needs immediate attention",
+    "annual_revenue": "Update with actual figure",
+    "monthly_revenue": "Update with actual figure",
+    "monthly_expenses": "Update with actual figure",
+    "cash_in_bank": "Update with actual figure"
   },
 
-  "business_metrics": {
-    "team_size": "26-40 people (LinkedIn: 26 discoverable, internal: 40+)",
-    "started_with": 2,
-    "modules_built": "70+",
-    "industries_served": "10+",
-    "active_clients": "Update with actual number",
-    "total_clients_ever": "Update with actual number",
-    "avg_contract_value": "Update with actual figure (INR)",
-    "monthly_recurring_revenue": "Update with actual figure",
-    "client_retention_rate": "Update with actual %",
-    "nps_score": "Update with actual score",
-    "linkedin_followers": 655,
-    "implementation_approach": "Consulting + Software + Training",
-    "customer_focus": "SME and Medium Enterprises"
+  "competitive_positioning": {
+    "commonly_compared_with": [
+      "Zoho", "Tally", "SAP Business One", "Odoo", "Microsoft Dynamics", "Custom Software Vendors"
+    ],
+    "differentiators": {
+      "vs_zoho": "Zoho provides business applications. Botivate delivers complete automation, consulting, implementation and AI tailored to the client's specific processes — not off-the-shelf modules.",
+      "vs_tally": "Tally manages accounting. Botivate automates the entire business — from enquiry to dispatch. Tally is a tool; Botivate is a transformation.",
+      "vs_sap": "SAP is a traditional ERP. Botivate positions AutoRocket as an AI automation layer above ERPs — integrating with existing systems rather than replacing them. Faster, cheaper, more flexible.",
+      "vs_custom_dev": "Custom developers build one-off software. Botivate converts industry experience into reusable, continuously improving modules with long-term consulting support.",
+      "vs_odoo": "Odoo is open-source ERP. Botivate focuses on business process consulting + automation + AI — not just software installation.",
+      "vs_microsoft_dynamics": "Dynamics is expensive enterprise ERP. Botivate is cost-effective, faster to implement, and AI-native from day one."
+    },
+    "core_differentiator": "We don't just build software. We understand businesses first, standardize their operations, then automate them with AI. Product + Consulting + Training in one package."
   },
 
-  "clients": {
-    "note": "No public client references found. Update with real client data.",
-    "known_industries": [
-      "Manufacturing",
-      "Trading",
-      "Hospitals & Healthcare",
-      "Jewellery",
-      "Real Estate",
-      "Steel",
-      "Coal Trading",
-      "Solar Energy",
-      "Service Companies"
+  "product_roadmap": {
+    "next_3_months": [
+      "AI Sales Agent",
+      "AI Follow-up Automation",
+      "WhatsApp Automation (enhanced)",
+      "Director Dashboard",
+      "Task AI",
+      "Approval Engine",
+      "Knowledge Base AI"
     ],
-    "sample_clients": [
-      {
-        "name": "Update with real client name",
-        "industry": "Manufacturing",
-        "location": "Raipur, CG",
-        "modules_used": ["CRM", "Inventory", "Production"],
-        "contract_value": "Update",
-        "since": "Update"
-      }
+    "3_to_6_months": [
+      "AI Operations Manager",
+      "AI MIS Assistant",
+      "AI Document Intelligence",
+      "Voice Commands",
+      "Mobile Apps (Flutter)",
+      "AI Reporting Engine"
     ],
-    "target_client_profile": {
-      "size": "10-500 employees",
-      "revenue": "1 Cr to 100 Cr annual turnover",
-      "pain_points": ["Manual processes", "No real-time visibility", "WhatsApp chaos", "HR inefficiency"],
-      "decision_maker": "MD, Director, Owner, CFO"
+    "6_to_12_months": [
+      "AI CFO module",
+      "AI HR",
+      "AI Procurement",
+      "AI Production Planning",
+      "Predictive Analytics",
+      "Autonomous Workflow Automation"
+    ],
+    "biggest_technical_challenge": "Building a scalable AI orchestration layer that integrates seamlessly with existing ERPs, cloud services and messaging platforms while maintaining security and performance."
+  },
+
+  "current_bottleneck": {
+    "primary": "Market awareness and enterprise sales",
+    "details": [
+      "Product capability significantly exceeds current market awareness",
+      "Enterprise sales cycles are long (30-90 days) and require multiple stakeholder buy-in",
+      "AI positioning needs stronger branding and public proof points",
+      "Scaling implementation capacity while maintaining delivery quality is a key operational challenge",
+      "Zero public case studies — no visible proof of value for inbound prospects"
+    ]
+  },
+
+  "geography": {
+    "current_active_states": [
+      "Chhattisgarh (primary)",
+      "Maharashtra",
+      "Madhya Pradesh",
+      "Gujarat",
+      "Odisha",
+      "Other Indian states via remote implementation"
+    ],
+    "languages_supported": ["English", "Hindi"],
+    "next_target": "Pan-India expansion",
+    "international_plans": {
+      "target_markets": ["UAE", "Singapore", "Middle East", "Global manufacturing companies"],
+      "timeline": "After Pan-India scale achieved"
     }
   },
 
-  "location_intelligence": {
-    "headquarters": "Raipur, Chhattisgarh",
-    "primary_market": "Chhattisgarh",
-    "nearby_cities_to_target": [
-      {
-        "city": "Bhilai",
-        "distance_from_raipur": "30 km",
-        "key_industries": ["Steel (SAIL BSP)", "Manufacturing", "Engineering"],
-        "opportunity": "Huge steel & manufacturing belt — AutoRocket inventory and production modules fit perfectly"
-      },
-      {
-        "city": "Durg",
-        "distance_from_raipur": "35 km",
-        "key_industries": ["Trading", "Manufacturing", "MSME"],
-        "opportunity": "Large MSME cluster, underserved by digital tools"
-      },
-      {
-        "city": "Bilaspur",
-        "distance_from_raipur": "120 km",
-        "key_industries": ["Coal trading", "Healthcare", "Education", "Government"],
-        "opportunity": "Coal trading and hospital automation — strong match with existing modules"
-      },
-      {
-        "city": "Korba",
-        "distance_from_raipur": "200 km",
-        "key_industries": ["Coal mining", "Power plants", "NTPC", "SECL"],
-        "opportunity": "Industrial automation for large PSU suppliers and contractors"
-      },
-      {
-        "city": "Rajnandgaon",
-        "distance_from_raipur": "75 km",
-        "key_industries": ["Agriculture", "Trading", "Manufacturing"],
-        "opportunity": "Untapped SME market, very few digital automation providers"
-      },
-      {
-        "city": "Jagdalpur",
-        "distance_from_raipur": "300 km",
-        "key_industries": ["Tribal trade", "Steel (Bastar)", "Agro-processing"],
-        "opportunity": "NMDC and steel ecosystem — inventory and procurement automation"
-      },
-      {
-        "city": "Nagpur",
-        "distance_from_raipur": "280 km",
-        "key_industries": ["Manufacturing", "Trading", "Healthcare", "Retail"],
-        "opportunity": "Large Maharashtra market adjacent to CG — CRM and HR modules"
-      },
-      {
-        "city": "Indore",
-        "distance_from_raipur": "470 km",
-        "key_industries": ["Manufacturing", "MSME", "IT", "Textiles"],
-        "opportunity": "MP's largest business hub — high willingness to adopt digital tools"
-      },
-      {
-        "city": "Bhopal",
-        "distance_from_raipur": "480 km",
-        "key_industries": ["Government", "Healthcare", "Education", "MSME"],
-        "opportunity": "State capital — government contractor automation, healthcare"
-      }
+  "partnerships": {
+    "tech_integrations": [
+      "Google Workspace",
+      "WhatsApp Business API",
+      "AWS",
+      "Tally",
+      "Google Apps Script",
+      "Looker Studio",
+      "REST APIs",
+      "ERP integrations (custom)"
     ],
-    "state_market": {
-      "chhattisgarh": {
-        "total_msme_count": "~6 lakh MSMEs",
-        "digital_adoption": "Very low — major opportunity",
-        "key_sectors": ["Steel", "Coal", "Mining", "Agriculture", "Manufacturing"],
-        "major_industrial_areas": ["Bhilai-Durg belt", "Korba industrial area", "Raipur MSME cluster"]
-      }
-    },
-    "local_competitors": [
-      {
-        "name": "Lighthouse ERP",
-        "location": "Raipur",
-        "serves": ["Raipur", "Raigarh", "Bhilai"],
-        "positioning": "Best ERP in Raipur — established player with case studies",
-        "threat_level": "High — direct competitor in home market"
-      },
-      {
-        "name": "Softweb Technologies",
-        "location": "Raipur",
-        "serves": "Chhattisgarh",
-        "positioning": "Cloud ERP, IoT, AI, ML, RPA",
-        "threat_level": "Medium — technology overlap"
-      },
-      {
-        "name": "Link Ideas",
-        "location": "Raipur",
-        "serves": "Chhattisgarh",
-        "positioning": "ERP, CRM — 10+ years experience, CA-backed",
-        "threat_level": "High — established trust, financial credibility"
-      },
-      {
-        "name": "Duplex Technologies",
-        "location": "Raipur",
-        "serves": "Raipur",
-        "positioning": "Simple, user-friendly CRM",
-        "threat_level": "Medium — lower end of market"
-      },
-      {
-        "name": "Sampark Infoways",
-        "location": "Raipur",
-        "serves": "Raipur",
-        "positioning": "Banking, mobile apps, CRM, e-commerce",
-        "threat_level": "Low — different focus"
-      }
-    ],
-    "competitor_count_local": "115+ ERP/CRM developers in Raipur-CG region"
+    "channel_partners": "Under development",
+    "system_integrator_partnerships": "Planned",
+    "government_initiatives": [
+      "GeM registration completed",
+      "Preparing for enterprise and government procurement opportunities"
+    ]
   },
 
-  "hiring_status": {
-    "actively_hiring": true,
-    "open_roles": [
-      "Backend Developer (Node.js)",
-      "Senior React Developer (15k-25k/month)",
-      "React Developer Intern (5k-7k/month)",
-      "Flutter App Developer (1-2 yrs exp)",
-      "R&D Team Members",
-      "AI Agent Development Interns (5k-7k/month)",
-      "Cyber Security Professionals",
-      "MIS Executive",
-      "Office Boy (5k-7k/month)"
-    ],
-    "note": "Active hiring signals growth intent but also indicates current team gaps in mobile (Flutter) and AI"
-  },
+  "strategic_priorities": [
+    "Position AutoRocket as the AI Business Operating System that sits above traditional ERP platforms — not a replacement, an AI layer.",
+    "Scale enterprise sales and build a repeatable implementation model without compromising delivery quality.",
+    "Build a global AI-first automation platform capable of running business operations autonomously."
+  ],
 
   "core_product": {
     "name": "AutoRocket",
     "description": "AutoRocket is an AI-first Business Operating System — positioned above traditional ERPs as the AI automation layer. It is not just ERP, not just CRM, not just AI — it is an operating system where AI manages the business. Built from 70+ proven automation modules.",
-    "positioning": "Above ERPs. The AI automation layer for the entire business.",
+    "positioning": "The AI automation layer above ERPs. Not a replacement — an upgrade.",
     "public_presence": "Zero — no app store listing, no G2/Capterra reviews, no public case studies as of June 2026",
     "key_capabilities": [
       "AI Agents that manage business workflows autonomously",
@@ -246,7 +326,9 @@
       "AI Sales Agent for automated lead handling and follow-ups",
       "Business Analytics and reporting",
       "Role-based permissions and approval workflows",
-      "Cloud-native, mobile-accessible platform"
+      "Cloud-native, mobile-accessible platform",
+      "Google Workspace and Tally integration",
+      "Knowledge Base AI for business processes"
     ]
   },
 
@@ -256,19 +338,32 @@
     "Vendor Management", "WhatsApp Automation", "AI Chatbots",
     "AI Sales Agent", "Director Dashboard", "Business Reporting",
     "MIS Dashboards", "Google Sheets Automation", "Approval Workflows",
-    "AI Business Intelligence"
+    "AI Business Intelligence", "Bid Management", "EMD Tracking",
+    "Transport Management", "Weighbridge Tracking", "Dispatch Monitoring",
+    "Document Repository", "Quality Control", "Production Planning",
+    "Procurement Management", "Financial Tracking"
+  ],
+
+  "industries_served": [
+    "Manufacturing (Steel, Rice, General)",
+    "Coal Trading",
+    "Hospitals & Healthcare",
+    "Jewellery",
+    "Real Estate",
+    "Solar Energy",
+    "Service Companies",
+    "Large Industrial Groups",
+    "Agro Processing"
   ],
 
   "evolution_phases": [
     { "phase": "Starting Phase", "description": "Company started with just 2 members and a vision to solve real business problems." },
-    { "phase": "Initial Journey", "description": "Worked directly at client locations instead of building software from an office." },
-    { "phase": "Learning Phase", "description": "Sat with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch and operators to understand root problems firsthand." },
-    { "phase": "Product Phase", "description": "Started converting every solved client problem into reusable automation modules." },
-    { "phase": "Growth Phase", "description": "Expanded team from 2 people to 40+ professionals." },
-    { "phase": "System Phase", "description": "Built 70+ automation modules covering manufacturing, trading, HR, finance, CRM, production, purchase, inventory and AI." },
-    { "phase": "AI Phase", "description": "Started integrating AI Agents, WhatsApp Automation and Business Intelligence into all products." },
-    { "phase": "AutoRocket Phase", "description": "Began building AutoRocket as an AI-first business operating system — not an ERP replacement, but an AI automation layer above ERPs." },
-    { "phase": "Current (2026)", "description": "Positioning Botivate as a company that helps businesses run on autopilot. Focused on SME and medium enterprises. Actively hiring for mobile (Flutter) and AI development. Brand presence still minimal — zero public reviews or case studies." }
+    { "phase": "On-Site Learning", "description": "Worked directly at client locations — sat with supervisors, managers, directors, accountants, plant heads, maintenance teams, stores, dispatch and operators to understand root problems firsthand." },
+    { "phase": "Module Building", "description": "Started converting every solved client problem into reusable automation modules. Built 70+ modules across manufacturing, trading, HR, finance, CRM, production, and AI." },
+    { "phase": "Scale Phase", "description": "Expanded team from 2 people to 40+ professionals. Served clients across Chhattisgarh, Maharashtra, MP, Gujarat, Odisha." },
+    { "phase": "AI Phase", "description": "Integrated AI Agents, WhatsApp Automation, and Business Intelligence. Clients include steel mills, coal traders, rice manufacturers." },
+    { "phase": "AutoRocket Phase", "description": "Building AutoRocket as an AI-first business operating system — positioned above traditional ERPs as the AI automation layer." },
+    { "phase": "Current (2026)", "description": "Market awareness is the primary bottleneck. Product capability exceeds public awareness. Actively building enterprise sales, public case studies, and international expansion readiness (UAE, Singapore)." }
   ],
 
   "vision_evolution": [
@@ -284,101 +379,193 @@
     "Google Sites & Looker Studio",
     "WhatsApp Business API",
     "Cloud Infrastructure (AWS)",
+    "Tally Integration",
     "AI Models & API Integrations",
-    "Custom Automation Workflows",
     "Current: AI Agents, Workflow Automation, Cloud-native Platform, AutoRocket"
   ],
 
-  "industries_served": [
-    "Manufacturing", "Trading", "Hospitals & Healthcare", "Jewellery",
-    "Real Estate", "Steel", "Coal Trading", "Solar Energy",
-    "Service Companies", "Large Industrial Groups"
-  ],
-
   "business_strategy": [
-    "Understand the business first",
-    "Identify root problems",
-    "Standardize the process",
-    "Automate the workflow",
-    "Integrate AI",
-    "Implement with the team",
-    "Train users (consulting, not just software delivery)",
-    "Continuously improve",
+    "Understand the business first — visit client sites, map real processes",
+    "Identify root problems, not surface symptoms",
+    "Standardize the process before automating",
+    "Automate the workflow with reusable modules",
+    "Integrate AI on top of automation",
+    "Implement with the team — not just hand over software",
+    "Train users — consulting, not just software delivery",
+    "Continuously improve — every client feedback becomes a product module",
     "Convert every learning into a reusable product module",
-    "Repeat across industries"
+    "Repeat and scale across industries and geographies"
   ],
 
   "key_decisions": [
-    "Instead of copying ERPs: Build from real business experience",
-    "Instead of selling software: Sell complete business automation",
+    "Instead of copying ERPs: Build from real business experience on client sites",
+    "Instead of selling software: Sell complete business automation + consulting",
     "Instead of one industry: Serve every business vertical",
-    "Instead of one product: Build reusable modules",
-    "Instead of outsourcing understanding: Visit client sites personally",
+    "Instead of one product: Build 70+ reusable modules",
+    "Instead of outsourcing understanding: Founders personally visit client sites",
     "Instead of stopping after delivery: Provide continuous improvement",
     "Instead of replacing employees: Make employees more productive with AI",
-    "Current major decision: Position AutoRocket above ERPs as the AI automation layer"
+    "Positioning AutoRocket above ERPs — not as ERP replacement but AI automation layer",
+    "GeM registration for government market entry",
+    "UAE and Singapore as first international expansion targets"
   ],
 
   "lessons_learned": [
     "Software doesn't solve problems. Process does.",
-    "Every business is different.",
+    "Every business is different — no one-size-fits-all solution.",
     "Implementation is harder than development.",
     "Users need consulting, not just software.",
-    "Automation should save time, not add work.",
+    "Automation should save time, not add complexity.",
     "Every complaint is an opportunity to improve the product.",
-    "Build reusable solutions.",
-    "Think in systems.",
+    "Build reusable solutions — convert every project into a module.",
+    "Think in systems, not features.",
     "AI should assist people, not replace them.",
-    "Long-term trust matters more than short-term revenue."
+    "Long-term trust matters more than short-term revenue.",
+    "Market awareness is as important as product quality.",
+    "Enterprise sales requires patience — 30-90 day cycles are normal."
   ],
 
   "competitive_advantages": [
     "Built from real client site experience — not from copying competitors",
     "70+ reusable modules developed from actual implementations",
-    "Deep domain expertise across manufacturing, trading, healthcare, jewellery and more",
+    "Deep domain expertise: steel, coal trading, rice manufacturing, hospitals, jewellery",
     "AI-first architecture with WhatsApp-native experience",
-    "Consulting + software + training — full business transformation, not just software delivery",
-    "Implementation in days, not months",
-    "Continuous improvement model — every client feedback becomes a product improvement",
-    "AutoRocket positioned above ERPs as AI automation layer — unique positioning in market",
-    "40+ person team with real business domain expertise",
-    "Long-term trust relationships with enterprise clients"
+    "Consulting + software + training — full business transformation package",
+    "Implementation in days/weeks, not months",
+    "Continuous improvement — every client feedback becomes a product improvement",
+    "AutoRocket positioned above ERPs — unique AI layer positioning",
+    "GeM registered — government market access",
+    "3 documented case studies: Steel Rolling Mill, Jai Bhole Group (Coal), Rice Manufacturing"
   ],
 
   "known_gaps": [
     "Zero public brand presence — no G2, Capterra, or app store listings",
-    "No published case studies or client success stories",
+    "No published case studies or client success stories (3 exist internally — must publish)",
     "No mobile app in public app stores (Flutter developer being hired)",
-    "MCA e-filing inactive — compliance risk",
+    "MCA e-filing inactive — URGENT compliance risk",
     "655 LinkedIn followers only — very low for B2B SaaS",
     "115+ local competitors in Raipur alone",
     "No public pricing — makes discovery hard for inbound leads",
-    "No press coverage or media mentions found"
+    "No press coverage or media mentions",
+    "Market awareness significantly lags product capability"
   ],
+
+  "location_intelligence": {
+    "headquarters": "Raipur, Chhattisgarh",
+    "primary_market": "Chhattisgarh",
+    "nearby_cities_to_target": [
+      {
+        "city": "Bhilai",
+        "distance_from_raipur": "30 km",
+        "key_industries": ["Steel (SAIL BSP)", "Manufacturing", "Engineering"],
+        "opportunity": "Huge steel & manufacturing belt — AutoRocket inventory and production modules fit perfectly. Proven with Steel Rolling Mill case study."
+      },
+      {
+        "city": "Durg",
+        "distance_from_raipur": "35 km",
+        "key_industries": ["Trading", "Manufacturing", "MSME"],
+        "opportunity": "Large MSME cluster, underserved by digital tools"
+      },
+      {
+        "city": "Bilaspur",
+        "distance_from_raipur": "120 km",
+        "key_industries": ["Coal trading", "Healthcare", "Education", "Government"],
+        "opportunity": "Coal trading proven with Jai Bhole Group — replicate model here"
+      },
+      {
+        "city": "Korba",
+        "distance_from_raipur": "200 km",
+        "key_industries": ["Coal mining", "Power plants", "NTPC", "SECL"],
+        "opportunity": "Industrial automation for large PSU suppliers and contractors"
+      },
+      {
+        "city": "Nagpur",
+        "distance_from_raipur": "280 km",
+        "key_industries": ["Manufacturing", "Trading", "Healthcare", "Retail"],
+        "opportunity": "Large Maharashtra market — CRM and HR modules"
+      },
+      {
+        "city": "Indore",
+        "distance_from_raipur": "470 km",
+        "key_industries": ["Manufacturing", "MSME", "IT", "Textiles"],
+        "opportunity": "MP's largest business hub — high willingness to adopt digital tools"
+      }
+    ],
+    "local_competitors": [
+      {
+        "name": "Lighthouse ERP",
+        "location": "Raipur",
+        "serves": ["Raipur", "Raigarh", "Bhilai"],
+        "positioning": "Best ERP in Raipur — established player with case studies",
+        "threat_level": "High — direct competitor in home market"
+      },
+      {
+        "name": "Link Ideas",
+        "location": "Raipur",
+        "serves": "Chhattisgarh",
+        "positioning": "ERP, CRM — 10+ years experience, CA-backed",
+        "threat_level": "High — established trust, financial credibility"
+      },
+      {
+        "name": "Softweb Technologies",
+        "location": "Raipur",
+        "serves": "Chhattisgarh",
+        "positioning": "Cloud ERP, IoT, AI, ML, RPA",
+        "threat_level": "Medium — technology overlap"
+      }
+    ],
+    "competitor_count_local": "115+ ERP/CRM developers in Raipur-CG region"
+  },
+
+  "hiring_status": {
+    "actively_hiring": true,
+    "open_roles": [
+      "Flutter Mobile Developer (URGENT — 2 weeks)",
+      "AI Engineers (Senior)",
+      "Enterprise Sales",
+      "Product Managers",
+      "Customer Success Managers",
+      "Cloud Engineers",
+      "Backend Developer (Node.js)",
+      "Senior React Developer",
+      "AI Agent Development (Interns)"
+    ]
+  },
 
   "future_vision": {
     "roadmap": [
-      "Botivate → AutoRocket → AI Operating System → Business runs itself",
-      "AI Managers", "AI Sales Team", "AI Operations", "AI Finance",
-      "AI HR", "AI Directors", "Every business decision backed by AI"
+      "AutoRocket AI layer above all ERPs",
+      "AI Sales Agent",
+      "AI Operations Manager",
+      "AI CFO module",
+      "AI HR",
+      "AI Procurement",
+      "Autonomous Workflow Automation",
+      "Pan-India scale",
+      "UAE + Singapore expansion",
+      "Global manufacturing automation platform"
     ],
-    "ultimate_goal": "Become the world's leading Business Automation and AI Company."
+    "ultimate_goal": "Build a global AI-first automation platform capable of running business operations autonomously.",
+    "positioning_goal": "AutoRocket = The AI Business Operating System that sits above every ERP in India."
   },
 
   "team": {
-    "size": "26-40",
+    "size": "40+",
     "started_with": 2,
-    "approach": "Domain experts who understand businesses, not just developers"
+    "approach": "Domain experts who understand businesses deeply before automating them"
   },
 
   "key_metrics": {
-    "team_size": "26-40",
+    "team_size": "40+",
     "modules_built": "70+",
-    "industries_served": "10+",
+    "industries_served": "9+",
+    "documented_case_studies": 3,
     "linkedin_followers": 655,
     "local_competitors": "115+",
-    "funding": "Bootstrapped / Unfunded",
-    "implementation_approach": "Consulting + Software + Training",
-    "customer_focus": "SME and Medium Enterprises"
+    "funding": "Bootstrapped",
+    "avg_deal_size": "₹4L+ per project",
+    "sales_cycle": "30-90 days",
+    "gem_registered": true,
+    "international_target": "UAE, Singapore"
   }
 }
